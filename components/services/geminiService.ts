@@ -97,7 +97,7 @@ export const generateImage = (prompt: string) => {
             contents: { parts: [{ text: prompt }] },
             config: { imageConfig: { aspectRatio: '16:9' } },
         });
-        const part = response.candidates?.[0]?.content?.parts.find(p => p.inlineData);
+        const part = response.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
         return part?.inlineData ? `data:${part.inlineData.mimeType};base64,${part.inlineData.data}` : null;
     });
 };
@@ -203,7 +203,7 @@ export const executeTerminalCommand = (command: string) => {
     });
 };
 
-export const analyzeVisionMood = (base64Image: string, language: string = "English") => {
+export const analyzeVisionMood = (base64Image: string) => {
     return withCache(`analyzeVisionMood:${base64Image.substring(0, 100)}`, async () => {
         const ai = getAI();
         const response = await ai.models.generateContent({
@@ -586,7 +586,7 @@ export const generateHighQualityModel = (prompt: string) => {
             contents: { parts: [{ text: prompt }] }, 
             config: { imageConfig: { aspectRatio: "3:4", imageSize: "4K" } } 
         });
-        const part = response.candidates?.[0]?.content?.parts.find(p => p.inlineData);
+        const part = response.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
         return part?.inlineData ? `data:${part.inlineData.mimeType};base64,${part.inlineData.data}` : null;
     });
 };

@@ -12,7 +12,7 @@ interface DashboardProps {
   userTier: SubscriptionTier 
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ setView, isOwner, userTier }) => {
+const Dashboard: React.FC<DashboardProps> = ({ setView, isOwner }) => {
   const CATEGORIES = [
     { name: 'WEALTH', modules: [
       { id: 'automation_nexus', label: 'AUTOPILOT', icon: Zap, desc: '30+ AI extraction vectors.', color: 'text-yellow-500' },

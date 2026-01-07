@@ -74,7 +74,7 @@ const RotatingGlobe = ({ color, onSelectDest }: { color: string, onSelectDest: (
 };
 
 // 3D Shop Interior Component
-const ShopInterior = ({ destination, onExit, buyItem, tier }: { destination: Destination, onExit: () => void, buyItem: (price: number, name: string, requiredTier?: SubscriptionTier) => void, tier: SubscriptionTier }) => {
+const ShopInterior = ({ destination, onExit, buyItem }: { destination: Destination, onExit: () => void, buyItem: (price: number, name: string, requiredTier?: SubscriptionTier) => void }) => {
   return (
     <group>
       <ambientLight intensity={0.8} />
@@ -246,7 +246,7 @@ const HolographicNexus: React.FC<{ unsettledAUD: number; setUnsettledAUD: React.
         {!inShop ? (
           <RotatingGlobe color={arMode ? '#00ff00' : '#00f0ff'} onSelectDest={handleTravel} />
         ) : (
-          currentDest && <ShopInterior destination={currentDest} onExit={() => setInShop(false)} buyItem={handleBuy} tier={tier} />
+          currentDest && <ShopInterior destination={currentDest} onExit={() => setInShop(false)} buyItem={handleBuy} />
         )}
 
         <OrbitControls 

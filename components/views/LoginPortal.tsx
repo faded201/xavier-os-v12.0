@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Fingerprint, Radio, Crown, ShieldAlert } from 'lucide-react';
+import { Fingerprint, Radio, Crown } from 'lucide-react';
 import { SubscriptionTier } from '../types';
 
 interface LoginPortalProps {
