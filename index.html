@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>XAVIER // SOVEREIGN_OS v10.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@300;500;700&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
+  
+  <!-- Core Architectural Fix: Tailwind JIT CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Space Grotesk', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+            fantasy: ['Cinzel', 'serif'],
+          },
+          animation: {
+            'spin-slow': 'spin 60s linear infinite',
+            'spin-slow-reverse': 'spin 60s linear infinite reverse',
+            'float': 'float 6s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-20px)' },
+            }
+          },
+          boxShadow: {
+            '3xl': '0 25px 60px -12px rgba(0, 0, 0, 0.7)',
+            '4xl': '0 40px 80px -20px rgba(0, 0, 0, 0.9)',
+          }
+        },
+      },
+      plugins: [
+        require('tailwindcss-animate')
+      ]
+    }
+  </script>
+
+  <style>
+    :root { 
+      color-scheme: dark;
+      --bg-color: #010409;
+      --primary-glow: #f59e0b; /* amber */
+      --primary-text: #f59e0b;
+      --border-color: rgba(255, 255, 255, 0.05);
+    }
+    html[data-mood="stable"] { --primary-glow: #f59e0b; --primary-text: #f59e0b; }
+    html[data-mood="calculating"] { --primary-glow: #f59e0b; --primary-text: #f59e0b; }
+    html[data-mood="aggressive"] { --primary-glow: #e11d48; --primary-text: #e11d48; }
+    html[data-mood="healing"] { --primary-glow: #10b981; --primary-text: #10b981; }
+    html[data-mood="quantum"] { --primary-glow: #8b5cf6; --primary-text: #8b5cf6; }
+
+    html {
+      height: 100vh; /* Fallback */
+      height: 100dvh;
+    }
+    html, body, #root {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: var(--bg-color);
+      color: #e2e8f0;
+      -webkit-font-smoothing: antialiased;
+      cursor: crosshair;
+    }
+    
+    .glass-panel {
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(40px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+    .scanline-effect {
+      position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+      background: linear-gradient(to bottom, transparent, rgba(8, 145, 178, 0.02) 50%, transparent);
+      animation: scanline 8s linear infinite;
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "recharts": "https://esm.sh/recharts@^3.6.0",
+    "vite": "https://esm.sh/vite@^7.3.0",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
+    "jszip": "https://esm.sh/jszip@^3.10.1",
+    "tailwindcss-animate": "https://esm.sh/tailwindcss-animate@^1.0.7"
+  }
+}
+</script>
+</head>
+<body>
+  <div class="scanline-effect"></div>
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
