@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Zap, Bot, RefreshCw, ShoppingBag, Youtube, Globe, Box, Target, ArrowRight } from 'lucide-react';
+import { Zap, ShoppingBag, Youtube, Globe, Box, ArrowRight } from 'lucide-react';
 import { executeSwarmTask } from '../services/geminiService';
 
 const VECTORS = [
@@ -22,7 +22,7 @@ const AutomationNexus: React.FC<{ setUnsettledAUD: React.Dispatch<React.SetState
     setLogs(prev => [`[${new Date().toLocaleTimeString()}] DEPLOYING_SWARM: ${v.name}...`, ...prev.slice(0, 10)]);
 
     try {
-      const result = await executeSwarmTask(v.name, v.category);
+      await executeSwarmTask(v.name, v.category);
       setUnsettledAUD(p => p + v.yield * 2.55); // 255x Swarm Multiplier simulation
       setLogs(prev => [`[SUCCESS] Extracted A$${(v.yield * 2.55).toFixed(2)} from ${v.name}.`, ...prev.slice(0, 10)]);
     } catch (e) {

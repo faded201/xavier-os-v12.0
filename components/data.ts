@@ -1,25 +1,23 @@
 
 import { 
   Activity,
-  BrainCircuit, Shield, Zap, LayoutGrid, Landmark, Key, Coins, 
+  BrainCircuit, Shield, Zap, LayoutGrid, Landmark, Key, Coins,
   Megaphone, Sparkles, ShoppingBag, Bot, Star, MessageSquare, 
-  Swords, Cloud, Globe, HardDrive, ShieldCheck, Layers, GitBranch, 
-  Terminal, Code, ReceiptText, Gavel, RadioTower, Cpu, Scale, 
-  BookOpen, User, Eye, Target, Mic, FlaskConical, Radar, Signal, 
-  Crosshair, Scan, MousePointerClick, ClipboardList, Gamepad2, 
-  Search, Server, Diamond, Plane, Package, Warehouse, Rocket, 
-  Fingerprint, Satellite, Network, Briefcase, Camera, LifeBuoy,
-  TrendingUp, AlertTriangle, Atom, Box, Link, Wand2, History, 
-  Mail, ListChecks, Swords as WarIcon, MapPin, Map as MapIcon,
-  Power, Home, CreditCard, EyeOff, CheckCircle2, Languages,
-  Folder, File, Upload, MoreVertical, Download, Trash, Share2,
-  Heart, HandMetal, ExternalLink, ShieldAlert,
-  FolderArchive, FileCode, CheckCircle2 as CheckCircleIcon,
-  Radio, BarChart3, LayoutPanelLeft, ListChecks as ListChecksIcon,
-  // FIX: Added missing icon imports
+  Swords, Cloud, Globe, HardDrive, ShieldCheck, Layers, GitBranch,
+  Terminal, Code, ReceiptText, Gavel, RadioTower, Cpu, Scale,
+  BookOpen, User, Eye, Target, Mic, FlaskConical, Radar, Signal,
+  Scan, MousePointerClick, Gamepad2,
+  Search, Server, Diamond, Plane, Warehouse, Rocket,
+  Fingerprint, Satellite, Network,
+  TrendingUp,
+  Swords as WarIcon, MapPin,
   Settings as SettingsIcon,
   Users, ClipboardList, CreditCard, Building2, Crown, PieChart
 } from 'lucide-react';
+
+/* Unused imports removed to fix build:
+   Crosshair, Package, Briefcase, Camera, LifeBuoy, AlertTriangle, Atom, Box, Link, Wand2, History, Mail, ListChecks, MapIcon, Power, Home, EyeOff, CheckCircle2, Languages, Folder, File, Upload, MoreVertical, Download, Trash, Share2, Heart, HandMetal, ExternalLink, ShieldAlert, FolderArchive, FileCode, CheckCircleIcon, Radio, BarChart3, LayoutPanelLeft, ListChecksIcon
+*/
 
 export const CORE_PERSONAS = [
   { 

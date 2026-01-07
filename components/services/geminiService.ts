@@ -1,5 +1,5 @@
 
-import { GoogleGenAI, Type, Modality } from "@google/genai";
+import { GoogleGenAI, Type } from "@google/genai";
 
 const apiCache = new Map<string, { timestamp: number, data: any }>();
 const CACHE_DURATION_MS = 5 * 60 * 1000;

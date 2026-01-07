@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Landmark, Star, Swords, Shield, Globe, CheckCircle2, Zap, ArrowRight, Crown, ShieldCheck, User, ShieldAlert } from 'lucide-react';
+import { Landmark, Star, Swords, Globe, CheckCircle2, Crown, User } from 'lucide-react';
 import { SubscriptionTier, TIER_CONFIG } from '../types';
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
   setView: (v: any) => void;
 }
 
-const QuantumTreasury: React.FC<Props> = ({ tier, startTrial, isOwner, setView }) => {
+const QuantumTreasury: React.FC<Props> = ({ tier, isOwner }) => {
   const tiers = [
     { id: 'SOVEREIGN', name: 'Sovereign', icon: Globe },
     { id: 'OPERATIVE', name: 'Operative', icon: User, popular: true },

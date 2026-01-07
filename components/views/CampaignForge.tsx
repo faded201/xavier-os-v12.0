@@ -14,7 +14,7 @@ const CAMPAIGNS = [
   { id: 'C4', name: 'Precision Ad Retargeting', icon: Target, cost: 800, reach: 'High Intent', desc: 'Cross-platform pixel tracking and dynamic creative optimization.' },
 ];
 
-const CampaignForge: React.FC<CampaignForgeProps> = ({ isOwner, tier }) => {
+const CampaignForge: React.FC<CampaignForgeProps> = () => {
   const handleLaunch = (campaignName: string, cost: number) => {
     if (confirm(`LAUNCH CAMPAIGN: ${campaignName}?\nCOST: $${cost} (Deducted from Balance)`)) {
       alert(`CAMPAIGN INITIATED: ${campaignName}\n\nSTATUS: ACTIVE\nEST. ROI: 350%`);

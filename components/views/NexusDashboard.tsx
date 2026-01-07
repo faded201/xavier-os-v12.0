@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { AppView, UserState, SystemMood, TIER_CONFIG, MODULE_ACCESS } from '../types';
-import { Bell, X, Lock, ShieldAlert, Fingerprint, EyeOff, Scan } from 'lucide-react';
+import { Bell, X, ShieldAlert, Fingerprint, EyeOff } from 'lucide-react';
 
 // Core Hub Components
-import Background from '../ui/Background';
+import Background from '../Background';
 import Sidebar from './Sidebar';
 import TopHeader from './TopHeader';
 import BottomTaskbar from './BottomTaskbar';
@@ -11,42 +11,10 @@ import BottomTaskbar from './BottomTaskbar';
 // View Components
 import Dashboard from './Dashboard';
 import AutomationNexus from './AutomationNexus';
-import SwarmCommand from '../SwarmCommand';
 import AutoMonetizer from './AutoMonetizer';
-import SecuritySanctum from '../SecuritySanctum';
-import ModuleRegistry from '../ModuleRegistry';
 import RepoManifest from './RepoManifest';
 import QuantumTreasury from './QuantumTreasury';
-import OracleNode from './OracleNode';
-import ArchitectKeyGen from './ArchitectKeyGen';
-import WealthMatrix from './WealthMatrix';
-import WarRoom from './WarRoom';
-import SocialNexus from './SocialNexus';
-import CreativeStudio from './CreativeStudio';
-import Marketplace from './Marketplace';
-import CloudDrive from '../CloudDrive';
-import Settings from '../Settings';
-import EqualityProtocol from '../services/EqualityProtocol';
-import HelpAndSupport from './HelpAndSupport';
-import UserProfile from './UserProfile';
-import LiveNeuralLink from './LiveNeuralLink';
-import ShardInfiltrator from './ShardInfiltrator';
-import ServerAdmin from './ServerAdmin';
-import CryptoHub from './QuantumCrypto';
-import AuditCore from './AuditCore';
-import NeuralPulse from './NeuralPulse';
-import GlobalTravelNexus from './GlobalTravelNexus';
-import SystemDiagnostics from './SystemDiagnostics';
 import CampaignForge from './CampaignForge';
-import AdCreativeStudio from './AdCreativeStudio';
-import FunnelForge from './FunnelForge';
-import AgentCommand from './AgentCommand';
-import TradingSignals from './TradingSignals';
-import TalentSanctum from './TalentSanctum';
-import TalentForge from './TalentForge';
-import SovereignSearch from './SovereignSearch';
-import GeospatialNexus from './GeospatialNexus';
-import SoulSync from './SoulSync';
 import HolographicNexus from './HolographicNexus';
 import PlatformTreasury from './PlatformTreasury';
 import SurveyNexus from './SurveyNexus';
@@ -54,6 +22,9 @@ import PaymentPortal from './PaymentPortal';
 import EquityVault from './EquityVault';
 import MastermindNexus from './MastermindNexus';
 import Portfolio from './Portfolio';
+
+// Placeholder for missing modules
+const ModulePlaceholder = ({ name }: { name: string }) => <div className="flex items-center justify-center h-full text-amber-500 font-mono animate-pulse">MODULE_OFFLINE: {name}</div>;
 
 // TACTICAL THEME CONFIGURATION: AI-Adaptive Color Palettes
 const MOOD_THEMES: Record<string, { primary: string; bg: string; secondary: string }> = {
@@ -86,7 +57,7 @@ const NexusDashboard: React.FC<{
   const [portfolioItems, setPortfolioItems] = useState<{ id: string; name: string; value: number; roi: string; timestamp: number }[]>([]);
   const [isLocked, setIsLocked] = useState(false);
   const [isBlurred, setIsBlurred] = useState(false);
-  const idleTimer = useRef<NodeJS.Timeout | null>(null);
+  const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const speak = (text: string) => {
     console.log(`[TTS_INTENT]: ${text}`);
@@ -251,42 +222,10 @@ const NexusDashboard: React.FC<{
     switch (view) {
       case 'dashboard': return <Dashboard setView={setView} isOwner={props.user.isOwner} userTier={props.user.tier} />;
       case 'automation_nexus': return <AutomationNexus setUnsettledAUD={props.setUnsettledAUD} />;
-      case 'swarm_255': return <SwarmCommand />;
       case 'wealth_gate': return <AutoMonetizer unsettledAUD={props.unsettledAUD} setUnsettledAUD={props.setUnsettledAUD} tier={props.user.tier} setView={setView} speak={speak} />;
-      case 'security': return <SecuritySanctum />;
-      case 'registry': return <ModuleRegistry setView={setView} />;
       case 'repo_manifest': return <RepoManifest />;
       case 'treasury': return <QuantumTreasury tier={props.user.tier} startTrial={()=>{}} isOwner={props.user.isOwner} setView={setView} />;
-      case 'oracle': return <OracleNode />;
-      case 'key_forge': return <ArchitectKeyGen />;
-      case 'wealth_matrix': return <WealthMatrix setView={setView} />;
-      case 'warroom': return <WarRoom setView={setView} />;
-      case 'social_nexus': return <SocialNexus unsettledAUD={props.unsettledAUD} setUnsettledAUD={props.setUnsettledAUD} speak={speak} />;
-      case 'creative_suite': return <CreativeStudio />;
-      case 'marketplace': return <Marketplace />;
-      case 'storage': return <CloudDrive />;
-      case 'settings': return <Settings tier={props.user.tier} isOwner={props.user.isOwner} setView={setView} />;
-      case 'equality': return <EqualityProtocol />;
-      case 'help_and_support': return <HelpAndSupport setView={setView} />;
-      case 'user_profile': return <UserProfile activePersona={props.activePersona} />;
-      case 'live_neural_link': return <LiveNeuralLink />;
-      case 'infiltrator': return <ShardInfiltrator />;
-      case 'server_admin': return <ServerAdmin />;
-      case 'crypto_hub': return <CryptoHub />;
-      case 'audit_core': return <AuditCore />;
-      case 'neural_pulse': return <NeuralPulse />;
-      case 'travel_nexus': return <GlobalTravelNexus />;
-      case 'sysdiag': return <SystemDiagnostics />;
       case 'campaign_forge': return <CampaignForge isOwner={props.user.isOwner} tier={props.user.tier} />;
-      case 'ad_creative_studio': return <AdCreativeStudio />;
-      case 'funnel_forge': return <FunnelForge />;
-      case 'agent': return <AgentCommand unsettledAUD={props.unsettledAUD} />;
-      case 'trading_signals': return <TradingSignals />;
-      case 'talent_forge': return <TalentForge isOwner={props.user.isOwner} />;
-      case 'talent_sanctum': return <TalentSanctum tier={props.user.tier} isOwner={props.user.isOwner} />;
-      case 'sov_search': return <SovereignSearch />;
-      case 'geospatial': return <GeospatialNexus />;
-      case 'soul_sync': return <SoulSync />;
       case 'holographic_nexus': return <HolographicNexus unsettledAUD={props.unsettledAUD} setUnsettledAUD={props.setUnsettledAUD} setPlatformRevenue={props.setPlatformRevenue} tier={props.user.tier} />;
       case 'platform_treasury': return <PlatformTreasury revenue={props.platformRevenue} currency={props.currency} onBack={() => setView('dashboard')} />;
       case 'survey_nexus': return <SurveyNexus setUnsettledAUD={props.setUnsettledAUD} setPlatformRevenue={props.setPlatformRevenue} />;
@@ -294,7 +233,7 @@ const NexusDashboard: React.FC<{
       case 'equity_vault': return <EquityVault setUnsettledAUD={props.setUnsettledAUD} onInvest={handleInvest} />;
       case 'mastermind_nexus': return <MastermindNexus setUnsettledAUD={props.setUnsettledAUD} />;
       case 'portfolio': return <Portfolio items={portfolioItems} onSell={handleSell} />;
-      default: return <Dashboard setView={setView} isOwner={props.user.isOwner} userTier={props.user.tier} />;
+      default: return <ModulePlaceholder name={view} />;
     }
   };
 

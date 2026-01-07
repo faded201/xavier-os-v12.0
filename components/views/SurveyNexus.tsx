@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ClipboardList, DollarSign, CheckCircle2, Loader2 } from 'lucide-react';
+import { ClipboardList, DollarSign, Loader2 } from 'lucide-react';
 
 interface Survey {
   id: string;

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { History, Activity, RefreshCw, Landmark, ShieldCheck, DollarSign, ReceiptText, ArrowDownCircle, Lock } from 'lucide-react';
+import { RefreshCw, Landmark, ArrowDownCircle } from 'lucide-react';
 import { AppView, SubscriptionTier } from '../types';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
   speak: (t: string) => void;
 }
 
-const AutoMonetizer: React.FC<Props> = ({ unsettledAUD, setUnsettledAUD, tier, setView, speak }) => {
+const AutoMonetizer: React.FC<Props> = ({ unsettledAUD, setUnsettledAUD, setView, speak }) => {
   const [stripeStatus, setStripeStatus] = useState<'OFFLINE' | 'CONNECTED' | 'LIVE_PRODUCTION'>('OFFLINE');
   const [isSettling, setIsSettling] = useState(false);
 

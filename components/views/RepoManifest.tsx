@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Github, Download, FolderArchive, Terminal, Zap, RefreshCw, Lock, GitBranch } from 'lucide-react';
+import { FolderArchive, Terminal, RefreshCw, GitBranch } from 'lucide-react';
 import JSZip from 'jszip';
 
 const RepoManifest: React.FC = () => {

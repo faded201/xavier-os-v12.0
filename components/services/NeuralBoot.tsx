@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Crown, Activity } from 'lucide-react';
+import { Crown } from 'lucide-react';
 
 const NeuralBoot: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);

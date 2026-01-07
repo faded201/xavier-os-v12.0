@@ -1,8 +1,8 @@
 import React from 'react';
 import { 
-  LayoutGrid, Landmark, Bot, Sparkles, ShoppingBag, Swords, 
-  ShieldCheck, ArrowRight, Key, Search, Zap, Target, Layers, 
-  TrendingUp, Globe, Activity, Star, Ghost, Warehouse, ReceiptText, Eye, Lock
+  LayoutGrid, Swords, 
+  ShieldCheck, ArrowRight, Zap, Layers, 
+  Star, Ghost, Warehouse, ReceiptText, Eye, Lock
 } from 'lucide-react';
 import { AppView, SubscriptionTier } from '../types';
 
