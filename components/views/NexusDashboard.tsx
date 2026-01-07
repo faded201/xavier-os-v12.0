@@ -76,6 +76,7 @@ const NexusDashboard: React.FC<{
   activePersona: any;
   setActivePersona: (p: any) => void;
   setUser: React.Dispatch<React.SetStateAction<UserState | null>>;
+  currency: string;
 }> = (props) => {
   const [view, setView] = useState<AppView>('dashboard');
   const [typingActivity, setTypingActivity] = useState(0);
@@ -287,7 +288,7 @@ const NexusDashboard: React.FC<{
       case 'geospatial': return <GeospatialNexus />;
       case 'soul_sync': return <SoulSync />;
       case 'holographic_nexus': return <HolographicNexus unsettledAUD={props.unsettledAUD} setUnsettledAUD={props.setUnsettledAUD} setPlatformRevenue={props.setPlatformRevenue} tier={props.user.tier} />;
-      case 'platform_treasury': return <PlatformTreasury revenue={props.platformRevenue} currency="AUD" onBack={() => setView('dashboard')} />;
+      case 'platform_treasury': return <PlatformTreasury revenue={props.platformRevenue} currency={props.currency} onBack={() => setView('dashboard')} />;
       case 'survey_nexus': return <SurveyNexus setUnsettledAUD={props.setUnsettledAUD} setPlatformRevenue={props.setPlatformRevenue} />;
       case 'payment_portal': return <PaymentPortal />;
       case 'equity_vault': return <EquityVault setUnsettledAUD={props.setUnsettledAUD} onInvest={handleInvest} />;

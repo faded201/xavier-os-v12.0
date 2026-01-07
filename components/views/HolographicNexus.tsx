@@ -138,7 +138,7 @@ const HolographicNexus: React.FC<{ unsettledAUD: number; setUnsettledAUD: React.
         if (now >= travelState.arrivalTime) {
           // Arrived
           setTravelState(prev => ({ ...prev, location: prev.destination!, destination: null, arrivalTime: 0 }));
-
+        } else {
           const diff = travelState.arrivalTime - now;
           const hours = Math.floor(diff / (1000 * 60 * 60));
           const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));

@@ -13,6 +13,8 @@ const App: React.FC = () => {
   const [platformRevenue, setPlatformRevenue] = useState(0);
   const [userCurrency, setUserCurrency] = useState('AUD');
   const swarmInitiated = useRef(false);
+  const [systemMood, setSystemMood] = useState<SystemMood>('stable');
+  const [activePersona, setActivePersona] = useState<any>(null);
 
   // Effect to simulate linking to backend/AI data stream on load
   useEffect(() => {
@@ -120,6 +122,10 @@ const App: React.FC = () => {
         setPlatformRevenue={setPlatformRevenue}
         setUser={setUser}
         currency={userCurrency}
+        systemMood={systemMood}
+        setSystemMood={setSystemMood}
+        activePersona={activePersona}
+        setActivePersona={setActivePersona}
       />
     </ErrorBoundary>
   );
