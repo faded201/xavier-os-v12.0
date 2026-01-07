@@ -90,6 +90,14 @@ const LoginPortal: React.FC<LoginPortalProps> = ({ onAuthenticated }) => {
           <Crown className="text-purple-500 group-hover:text-white transition-colors" size={24} />
         </button>
       </div>
+
+      {/* SKIP AUTH BUTTON */}
+      <button 
+        onClick={() => onAuthenticated('INVERSION')}
+        className="absolute top-6 right-6 text-gray-700 hover:text-white text-[10px] font-mono uppercase tracking-widest z-50"
+      >
+        [ SKIP_AUTH ]
+      </button>
     </div>
   );
 };

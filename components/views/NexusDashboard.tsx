@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppView, UserState, SystemMood, TIER_CONFIG, MODULE_ACCESS } from '../types';
-import { Bell, X, ShieldAlert, Fingerprint, EyeOff } from 'lucide-react';
+import { Bell, X, ShieldAlert, Fingerprint, Bot, ArrowLeft } from 'lucide-react';
 
 // Core Hub Components
 import Background from '../Background';
@@ -18,6 +18,7 @@ import CampaignForge from './CampaignForge';
 import HolographicNexus from './HolographicNexus';
 import PlatformTreasury from './PlatformTreasury';
 import SurveyNexus from './SurveyNexus';
+import SocialNexus from './SocialNexus';
 import PaymentPortal from './PaymentPortal';
 import EquityVault from './EquityVault';
 import MastermindNexus from './MastermindNexus';
@@ -56,8 +57,7 @@ const NexusDashboard: React.FC<{
   const [notification, setNotification] = useState<{ title: string; message: string; action?: () => void } | null>(null);
   const [portfolioItems, setPortfolioItems] = useState<{ id: string; name: string; value: number; roi: string; timestamp: number }[]>([]);
   const [isLocked, setIsLocked] = useState(false);
-  const [isBlurred, setIsBlurred] = useState(false);
-  const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [showSwarmModal, setShowSwarmModal] = useState(false);
 
   const speak = (text: string) => {
     console.log(`[TTS_INTENT]: ${text}`);
@@ -67,6 +67,17 @@ const NexusDashboard: React.FC<{
     try {
       // Tactical UI Alert Sound
       const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+      audio.volume = 0.5;
+      audio.play().catch(e => console.warn("Audio autoplay blocked:", e));
+    } catch (e) {
+      console.warn("Audio system offline");
+    }
+  };
+
+  const playSwarmSound = () => {
+    try {
+      // Mechanical deployment sound
+      const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3');
       audio.volume = 0.5;
       audio.play().catch(e => console.warn("Audio autoplay blocked:", e));
     } catch (e) {
@@ -117,31 +128,10 @@ const NexusDashboard: React.FC<{
     window.addEventListener('keydown', handleSecurityKeys);
 
     // 2. Auto-Lock & Privacy Blur
-    const resetIdle = () => {
-        if (idleTimer.current) clearTimeout(idleTimer.current);
-        if (!isLocked) {
-            idleTimer.current = setTimeout(() => setIsLocked(true), 60000); // 60s idle lock
-        }
-    };
-
-    const handleBlur = () => setIsBlurred(true);
-    const handleFocus = () => setIsBlurred(false);
-
-    window.addEventListener('mousemove', resetIdle);
-    window.addEventListener('keydown', resetIdle);
-    window.addEventListener('blur', handleBlur);
-    window.addEventListener('focus', handleFocus);
-
-    resetIdle();
 
     return () => {
         document.removeEventListener('contextmenu', preventDefault);
         window.removeEventListener('keydown', handleSecurityKeys);
-        window.removeEventListener('mousemove', resetIdle);
-        window.removeEventListener('keydown', resetIdle);
-        window.removeEventListener('blur', handleBlur);
-        window.removeEventListener('focus', handleFocus);
-        if (idleTimer.current) clearTimeout(idleTimer.current);
     };
   }, [isLocked]);
 
@@ -229,6 +219,7 @@ const NexusDashboard: React.FC<{
       case 'holographic_nexus': return <HolographicNexus unsettledAUD={props.unsettledAUD} setUnsettledAUD={props.setUnsettledAUD} setPlatformRevenue={props.setPlatformRevenue} tier={props.user.tier} />;
       case 'platform_treasury': return <PlatformTreasury revenue={props.platformRevenue} currency={props.currency} onBack={() => setView('dashboard')} />;
       case 'survey_nexus': return <SurveyNexus setUnsettledAUD={props.setUnsettledAUD} setPlatformRevenue={props.setPlatformRevenue} />;
+      case 'social_nexus': return <SocialNexus />;
       case 'payment_portal': return <PaymentPortal />;
       case 'equity_vault': return <EquityVault setUnsettledAUD={props.setUnsettledAUD} onInvest={handleInvest} />;
       case 'mastermind_nexus': return <MastermindNexus setUnsettledAUD={props.setUnsettledAUD} />;
@@ -298,15 +289,6 @@ const NexusDashboard: React.FC<{
         </div>
       )}
 
-      {/* PRIVACY SHIELD (Anti-Screen Scraping) */}
-      {isBlurred && !isLocked && (
-        <div className="absolute inset-0 z-[100] bg-black/90 backdrop-blur-3xl flex flex-col items-center justify-center text-[var(--primary)]">
-            <EyeOff size={64} className="mb-6 animate-pulse" />
-            <h2 className="text-2xl font-black tracking-[0.5em] uppercase">Secure View Obfuscated</h2>
-            <p className="mt-4 font-mono text-xs opacity-50">ANTI-SCREEN-SCRAPING PROTOCOL ACTIVE // FOCUS WINDOW TO RESUME</p>
-        </div>
-      )}
-
       {/* QUANTUM LOCK SCREEN */}
       {isLocked && (
         <div className="absolute inset-0 z-[200] bg-black flex flex-col items-center justify-center text-[var(--primary)]">
@@ -336,6 +318,53 @@ const NexusDashboard: React.FC<{
             </div>
         </div>
       )}
+
+      {/* SWARM QUICK ACTION MODAL */}
+      {showSwarmModal && (
+        <div 
+          className="fixed inset-0 z-[180] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowSwarmModal(false);
+          }}
+        >
+            <div className="bg-black border-2 border-amber-500/50 rounded-[2rem] w-full max-w-5xl h-[80vh] overflow-hidden shadow-[0_0_100px_rgba(245,158,11,0.2)] relative flex flex-col">
+                <div className="absolute top-0 right-0 p-6 z-50">
+                    <button onClick={() => setShowSwarmModal(false)} className="bg-black/50 hover:bg-red-500 hover:text-white text-gray-500 p-2 rounded-full transition-colors border border-white/10">
+                        <X size={24} />
+                    </button>
+                </div>
+                <div className="flex-1 overflow-y-auto p-2 md:p-8">
+                    <AutomationNexus setUnsettledAUD={props.setUnsettledAUD} />
+                </div>
+            </div>
+        </div>
+      )}
+
+      {/* GLOBAL FLOATING CONTROLS (Swarm & Back/Skip) */}
+      <div className="fixed bottom-24 md:bottom-8 right-6 z-[150] flex flex-col gap-4 items-end">
+         {/* SWARM ACCESS */}
+         <button 
+            onClick={() => {
+              playSwarmSound();
+              setShowSwarmModal(true);
+            }}
+            className="group flex items-center justify-center w-14 h-14 bg-amber-500 text-black rounded-full shadow-[0_0_30px_rgba(245,158,11,0.4)] hover:scale-110 transition-all border-2 border-white hover:bg-white"
+            title="DEPLOY SWARM"
+         >
+            <Bot size={28} className="group-hover:animate-bounce" />
+         </button>
+
+         {/* BACK / SKIP BUTTON */}
+         {view !== 'dashboard' && (
+            <button 
+               onClick={() => setView('dashboard')}
+               className="group flex items-center justify-center w-14 h-14 bg-gray-900 text-white rounded-full shadow-2xl hover:bg-gray-800 transition-all border-2 border-gray-700"
+               title="RETURN TO HUB"
+            >
+               <ArrowLeft size={28} className="group-hover:-translate-x-1 transition-transform" />
+            </button>
+         )}
+      </div>
 
       <Background />
       <div className="relative z-10 h-full w-full md:grid md:grid-cols-[auto_1fr]">

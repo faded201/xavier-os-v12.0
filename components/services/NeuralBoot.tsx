@@ -86,6 +86,14 @@ const NeuralBoot: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
            </div>
         </div>
       </div>
+
+      {/* SKIP BOOT BUTTON */}
+      <button 
+        onClick={onComplete}
+        className="absolute bottom-10 right-10 text-amber-500/40 hover:text-amber-500 text-xs font-mono tracking-[0.2em] border border-amber-500/20 px-6 py-2 rounded-full hover:bg-amber-500/10 transition-all z-50"
+      >
+        [ SKIP_BOOT ]
+      </button>
     </div>
   );
 };
