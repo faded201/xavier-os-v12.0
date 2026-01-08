@@ -95,7 +95,7 @@ const AutoMonetizer: React.FC<Props> = ({ unsettledAUD, setUnsettledAUD, speak }
         setPayoutHistory(prev => prev.map(p => p.id === newPayout.id ? { 
             ...p, 
             status: 'PAID',
-            steps: p.steps.map(s => ({ ...s, status: 'done', time: s.status === 'done' ? s.time : new Date().toLocaleTimeString() }))
+            steps: p.steps.map((s: any) => ({ ...s, status: 'done', time: s.status === 'done' ? s.time : new Date().toLocaleTimeString() }))
         } : p));
     }, 4500);
   };
