@@ -76,6 +76,7 @@ const QuantumTreasury: React.FC<Props> = ({ tier, isOwner }) => {
                </div>
                <button 
                   disabled={isCurrent || isLower}
+                  onClick={() => startTrial(t.id as SubscriptionTier)}
                   className={`w-full py-6 rounded-3xl font-black uppercase italic transition-all active:scale-95 ${isCurrent || isLower ? 'bg-gray-800 text-gray-500 cursor-not-allowed border-none' : 'bg-white text-black border-4 border-white hover:bg-blue-600 hover:text-white hover:border-blue-600'}`}
                >
                   {isCurrent ? 'LVL_SYNCHRONIZED' : isLower ? 'TIER_EXCEEDED' : 'INITIALIZE_UPGRADE'}

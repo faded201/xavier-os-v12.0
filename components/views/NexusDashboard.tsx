@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AppView, UserState, SystemMood, TIER_CONFIG } from '../types';
+import { AppView, UserState, SystemMood, TIER_CONFIG, SubscriptionTier } from '../types';
 import { Bell, X, ShieldAlert, Fingerprint, Bot, ArrowLeft } from 'lucide-react';
 import { MODULES } from '../data';
 
@@ -13,6 +13,10 @@ import BottomTaskbar from './BottomTaskbar';
 import Dashboard from './Dashboard';
 import AutomationNexus from './AutomationNexus';
 import AutoMonetizer from './AutoMonetizer';
+import LogisticsNexus from './LogisticsNexus';
+import ArchitectKeyGen from './ArchitectKeyGen';
+import UniversalModule from './UniversalModule';
+import ModuleRegistry from './ModuleRegistry';
 import RepoManifest from './RepoManifest';
 import QuantumTreasury from './QuantumTreasury';
 import CampaignForge from './CampaignForge';
@@ -24,9 +28,8 @@ import PaymentPortal from './PaymentPortal';
 import EquityVault from './EquityVault';
 import MastermindNexus from './MastermindNexus';
 import Portfolio from './Portfolio';
-
-// Placeholder for missing modules
-const ModulePlaceholder = ({ name }: { name: string }) => <div className="flex items-center justify-center h-full text-amber-500 font-mono animate-pulse">MODULE_OFFLINE: {name}</div>;
+import UserProfile from './UserProfile';
+import Sentinel from './Sentinel';
 
 // TACTICAL THEME CONFIGURATION: AI-Adaptive Color Palettes
 const MOOD_THEMES: Record<string, { primary: string; bg: string; secondary: string }> = {
@@ -59,6 +62,7 @@ const NexusDashboard: React.FC<{
   const [portfolioItems, setPortfolioItems] = useState<{ id: string; name: string; value: number; roi: string; timestamp: number }[]>([]);
   const [isLocked, setIsLocked] = useState(false);
   const [showSwarmModal, setShowSwarmModal] = useState(false);
+  const [selectedUpgradeTier, setSelectedUpgradeTier] = useState<SubscriptionTier>('ARCHITECT');
 
   const speak = (text: string) => {
     console.log(`[TTS_INTENT]: ${text}`);
@@ -88,8 +92,8 @@ const NexusDashboard: React.FC<{
 
   const handleCodeSubmit = () => {
     // Verify One-Time Code (In production, verify with backend)
-    const validCodes = ['XAVIER-GENESIS', 'TALENT-ACCESS-01', 'LEANNE-PRIME'];
-    if (validCodes.includes(accessCode)) {
+    const validCodes = ['XAVIER-GENESIS', 'TALENT-ACCESS-01', 'LEANNE-PRIME', 'architect_x_2025'];
+    if (validCodes.includes(accessCode) || accessCode.startsWith('XAVIER-UL-')) {
       props.setUser(prev => prev ? ({ ...prev, hasTalentPass: true }) : null);
       setCodeError('');
     } else {
@@ -218,19 +222,24 @@ const NexusDashboard: React.FC<{
     switch (view) {
       case 'dashboard': return <Dashboard setView={setView} isOwner={props.user.isOwner} userTier={props.user.tier} />;
       case 'automation_nexus': return <AutomationNexus setUnsettledAUD={props.setUnsettledAUD} />;
+      case 'logistics_nexus': return <LogisticsNexus />;
       case 'wealth_gate': return <AutoMonetizer unsettledAUD={props.unsettledAUD} setUnsettledAUD={props.setUnsettledAUD} tier={props.user.tier} setView={setView} speak={speak} />;
+      case 'key_forge': return <ArchitectKeyGen />;
+      case 'registry': return <ModuleRegistry setView={setView} />;
       case 'repo_manifest': return <RepoManifest />;
-      case 'treasury': return <QuantumTreasury tier={props.user.tier} startTrial={()=>{}} isOwner={props.user.isOwner} setView={setView} />;
+      case 'treasury': return <QuantumTreasury tier={props.user.tier} startTrial={(t) => { setSelectedUpgradeTier(t); setView('payment_portal'); }} isOwner={props.user.isOwner} setView={setView} />;
       case 'campaign_forge': return <CampaignForge isOwner={props.user.isOwner} tier={props.user.tier} />;
       case 'holographic_nexus': return <HolographicNexus unsettledAUD={props.unsettledAUD} setUnsettledAUD={props.setUnsettledAUD} setPlatformRevenue={props.setPlatformRevenue} tier={props.user.tier} />;
       case 'platform_treasury': return <PlatformTreasury revenue={props.platformRevenue} currency={props.currency} onBack={() => setView('dashboard')} />;
       case 'survey_nexus': return <SurveyNexus setUnsettledAUD={props.setUnsettledAUD} setPlatformRevenue={props.setPlatformRevenue} />;
       case 'social_nexus': return <SocialNexus />;
-      case 'payment_portal': return <PaymentPortal />;
+      case 'user_profile': return <UserProfile user={props.user} activePersona={props.activePersona} onLogout={props.onLogout} />;
+      case 'payment_portal': return <PaymentPortal targetTier={selectedUpgradeTier} onBack={() => setView('treasury')} />;
       case 'equity_vault': return <EquityVault setUnsettledAUD={props.setUnsettledAUD} onInvest={handleInvest} />;
       case 'mastermind_nexus': return <MastermindNexus setUnsettledAUD={props.setUnsettledAUD} />;
       case 'portfolio': return <Portfolio items={portfolioItems} onSell={handleSell} />;
-      default: return <ModulePlaceholder name={view} />;
+      case 'sentinel': return <Sentinel />;
+      default: return <UniversalModule moduleId={view} />;
     }
   };
 
