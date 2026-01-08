@@ -112,6 +112,7 @@ const App: React.FC = () => {
           // No simulation fallback. Real-world functionality requires user action.
         }
       }
+    };
        
 
     if (user) {

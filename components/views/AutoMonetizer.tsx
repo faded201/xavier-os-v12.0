@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { RefreshCw, Landmark, ArrowDownCircle, CreditCard, Settings, ShieldCheck, X, Copy, Loader2, Search, CheckCircle, Activity } from 'lucide-react';
+import { RefreshCw, Landmark, ArrowDownCircle, CreditCard, Settings, ShieldCheck, X, Copy, Loader2, Search } from 'lucide-react';
 import { AppView, SubscriptionTier } from '../types';
 
 interface Props {
