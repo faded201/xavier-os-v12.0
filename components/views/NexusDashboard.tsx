@@ -30,6 +30,8 @@ import MastermindNexus from './MastermindNexus';
 import Portfolio from './Portfolio';
 import UserProfile from './UserProfile';
 import Sentinel from './Sentinel';
+import AppBuilder from './AppBuilder';
+import WebsiteBuilder from './WebsiteBuilder';
 
 // TACTICAL THEME CONFIGURATION: AI-Adaptive Color Palettes
 const MOOD_THEMES: Record<string, { primary: string; bg: string; secondary: string }> = {
@@ -261,6 +263,8 @@ const NexusDashboard: React.FC<{
       case 'mastermind_nexus': return <MastermindNexus setUnsettledAUD={props.setUnsettledAUD} />;
       case 'portfolio': return <Portfolio items={portfolioItems} onSell={handleSell} />;
       case 'sentinel': return <Sentinel />;
+      case 'app_builder': return <AppBuilder />;
+      case 'web_builder': return <WebsiteBuilder />;
       default: return <UniversalModule moduleId={view} />;
     }
   };

@@ -15,6 +15,7 @@ export type AppView =
   | 'crypto_hub' | 'audit_core' | 'neural_pulse' | 'travel_nexus'
   | 'mesh' | 'cluster' | 'holographic_nexus' | 'sysdiag' | 'campaign_forge'
   | 'ad_creative_studio' | 'funnel_forge' | 'agent' | 'ad_arbitrage' | 'trading_signals' | 'talent_sanctum' | 'key_gen' | 'equity_vault' | 'mastermind_nexus' | 'portfolio'
+  | 'app_builder' | 'web_builder'
   | 'vpersona' | 'marketplace' | 'mission_manifest' | 'strike_command' | 'sigint' | 'geospatial' | 'squad_command' | 'sov_search';
 
 export type SubscriptionTier = 'SOVEREIGN' | 'OPERATIVE' | 'ARCHITECT' | 'MAGISTRATE' | 'INVERSION';
@@ -52,4 +53,6 @@ export const MODULE_ACCESS: Partial<Record<AppView, { minTier: SubscriptionTier,
     talent_forge: { minTier: 'INVERSION', isOwnerOnly: true },
     platform_treasury: { minTier: 'INVERSION', isOwnerOnly: true },
     mastermind_nexus: { minTier: 'MAGISTRATE' },
+    app_builder: { minTier: 'ARCHITECT' },
+    web_builder: { minTier: 'ARCHITECT' },
 };

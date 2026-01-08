@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   LayoutGrid, Swords, 
   ShieldCheck, ArrowRight, Zap, Layers, Key,
-  Star, Ghost, Warehouse, ReceiptText, Eye, Lock, X, Crown
+  Star, Ghost, Warehouse, ReceiptText, Eye, Lock, X, Crown, Smartphone, Layout
 } from 'lucide-react';
 import { AppView, SubscriptionTier } from '../types';
 
@@ -39,6 +39,10 @@ const Dashboard: React.FC<DashboardProps> = ({ setView, isOwner, userTier }) => 
       { id: 'soul_sync', label: 'SOUL SYNC', icon: Ghost, desc: 'Legacy operative sharding.', color: 'text-indigo-400' },
       { id: 'talent_forge', label: 'TALENT', icon: Star, desc: '4K Persona generation.', color: 'text-amber-500', minTier: 'ARCHITECT' },
       { id: 'registry', label: '155_MODS', icon: Layers, desc: 'Restored module shards.', color: 'text-purple-500' },
+    ]},
+    { name: 'CREATION ENGINE', modules: [
+      { id: 'app_builder', label: 'APP FORGE', icon: Smartphone, desc: 'AI Mobile App Compiler.', color: 'text-cyan-400', minTier: 'ARCHITECT' },
+      { id: 'web_builder', label: 'WEB MATRIX', icon: Layout, desc: 'Autonomous Site Generator.', color: 'text-pink-500', minTier: 'ARCHITECT' },
     ]}
   ];
 

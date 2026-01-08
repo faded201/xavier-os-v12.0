@@ -11,7 +11,7 @@ import {
   Fingerprint, Satellite, Network,
   TrendingUp,
   Swords as WarIcon, MapPin,
-  Settings as SettingsIcon,
+  Settings as SettingsIcon, Smartphone, Layout,
   Users, ClipboardList, CreditCard, Building2, Crown, PieChart
 } from 'lucide-react';
 
@@ -117,4 +117,6 @@ export const MODULES = [
     { id: 'equity_vault', label: 'Equity Vault', icon: Building2, desc: 'Private equity & asset investment.', minTier: 'OPERATIVE' },
     { id: 'mastermind_nexus', label: 'Mastermind', icon: Crown, desc: 'Elite networking circles.', minTier: 'MAGISTRATE' },
     { id: 'portfolio', label: 'Portfolio', icon: PieChart, desc: 'Track high-ticket asset performance.', minTier: 'OPERATIVE' },
+    { id: 'app_builder', label: 'App Forge', icon: Smartphone, desc: 'AI-powered mobile application compiler.', minTier: 'ARCHITECT' },
+    { id: 'web_builder', label: 'Web Matrix', icon: Layout, desc: 'Autonomous website generation engine.', minTier: 'ARCHITECT' },
 ];

@@ -83,7 +83,7 @@ const App: React.FC = () => {
              })
           });
           if (!swarmRes.ok) throw new Error("Swarm Network Busy");
-          const swarmData = await swarmRes.json();
+          await swarmRes.json();
           
           // Revenue Split: 80% to User, 20% to Platform
           const userNet = 1000000000;

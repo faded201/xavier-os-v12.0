@@ -13,8 +13,17 @@ const RepoManifest: React.FC = () => {
     'components/types.ts', 'components/data.ts', 'components/services/geminiService.ts',
     'components/services/NeuralBoot.tsx', 'components/views/NexusDashboard.tsx',
     'components/views/Dashboard.tsx', 'components/views/AutomationNexus.tsx',
-    'components/views/RepoManifest.tsx', 'components/views/LoginPortal.tsx',
-    'components/views/AutoMonetizer.tsx', 'components/views/QuantumTreasury.tsx'
+    'components/views/RepoManifest.tsx', 'components/views/LoginPortal.tsx', 
+    'components/views/AutoMonetizer.tsx', 'components/views/QuantumTreasury.tsx',
+    'components/views/Sentinel.tsx', 'components/views/SocialNexus.tsx',
+    'components/views/UniversalModule.tsx', 'components/views/ArchitectKeyGen.tsx',
+    'components/views/ModuleRegistry.tsx', 'components/views/PaymentPortal.tsx',
+    'components/views/LogisticsNexus.tsx', 'components/views/HolographicNexus.tsx',
+    'components/views/BottomTaskbar.tsx', 'components/views/Sidebar.tsx',
+    'components/views/TopHeader.tsx', 'components/views/SurveyNexus.tsx',
+    'components/views/CampaignForge.tsx', 'components/views/UserProfile.tsx',
+    'components/views/AppBuilder.tsx', 'components/views/WebsiteBuilder.tsx',
+    'components/Background.tsx'
   ];
 
   const triggerDownload = async () => {
