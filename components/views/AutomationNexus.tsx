@@ -49,11 +49,11 @@ const AutomationNexus: React.FC<{ unsettledAUD: number; setUnsettledAUD: React.D
 
     try {
       await executeSwarmTask(v.name, v.category);
-      const payout = 1000000000;
+      const payout = v.yield;
       setUnsettledAUD(p => p + payout); 
       setLogs(prev => [`[SUCCESS] Extracted A$${payout.toLocaleString()} from ${v.name}.`, ...prev.slice(0, 10)]);
     } catch (e) {
-      const payout = 1000000000;
+      const payout = v.yield;
       setUnsettledAUD(p => p + payout);
       setLogs(prev => [`[WARN] Neural link saturated. Rerouting to local core...`, `[SUCCESS] Extracted A$${payout.toLocaleString()} from ${v.name}.`, ...prev.slice(0, 10)]);
     } finally {

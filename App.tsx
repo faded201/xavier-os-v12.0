@@ -83,13 +83,15 @@ const App: React.FC = () => {
              })
           });
           if (!swarmRes.ok) throw new Error("Swarm Network Busy");
-          await swarmRes.json();
+          const swarmData = await swarmRes.json();
           
           // Revenue Split: 80% to User, 20% to Platform
-          const userNet = 1000000000;
-          const platformCut = 200000000;
-          setUnsettledBalance(prev => prev + userNet);
-          setPlatformRevenue(prev => prev + platformCut);
+          if (swarmData && swarmData.earnings) {
+            const userNet = swarmData.earnings * 0.80;
+            const platformCut = swarmData.earnings * 0.20;
+            setUnsettledBalance(prev => prev + userNet);
+            setPlatformRevenue(prev => prev + platformCut);
+          }
         } catch (e) {
           console.log("Swarm Backend offline. Waiting for manual deployment.");
           // No simulation fallback. Real-world functionality requires user action.
