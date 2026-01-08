@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, Shield, Crown, Activity, LogOut, Key, CheckCircle2 } from 'lucide-react';
+import { User, Shield, Crown, Activity, LogOut, Key } from 'lucide-react';
 import { UserState } from '../types';
 
 interface UserProfileProps {
