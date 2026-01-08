@@ -102,14 +102,14 @@ const App: React.FC = () => {
     }
   }, [user]);
 
-  const handleAuthenticated = async (tier: SubscriptionTier = 'SOVEREIGN') => {
+  const handleAuthenticated = async (tier: SubscriptionTier = 'SOVEREIGN', hasTalentPass: boolean = false) => {
     // In a real app, we would verify the token with the backend here
-    // Set subscription expiry to 30 days from now for non-owners
-    const expiry = tier === 'INVERSION' 
-      ? undefined // No expiry for owner
+    // Set subscription expiry to 30 days from now for non-owners/non-key-holders
+    const expiry = (tier === 'INVERSION' || hasTalentPass)
+      ? undefined // No expiry for owner or pass key holders (Forever Access)
       : Date.now() + (30 * 24 * 60 * 60 * 1000);
 
-    setUser({ tier, isOwner: tier === 'INVERSION', hasTalentPass: false, subscriptionExpiry: expiry });
+    setUser({ tier, isOwner: tier === 'INVERSION', hasTalentPass, subscriptionExpiry: expiry });
     setIsBooting(true);
   };
 

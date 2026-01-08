@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Scan, Radio, Crown, CreditCard, ArrowLeft, Key } from 'lucide-react';
+import { Scan, Radio, CreditCard, ArrowLeft, Key } from 'lucide-react';
 import { SubscriptionTier } from '../types';
 import QuantumTreasury from './QuantumTreasury';
 
 interface LoginPortalProps {
-  onAuthenticated: (tier?: SubscriptionTier) => void;
+  onAuthenticated: (tier?: SubscriptionTier, hasTalentPass?: boolean) => void;
 }
 
 const LoginPortal: React.FC<LoginPortalProps> = ({ onAuthenticated }) => {
@@ -33,18 +33,11 @@ const LoginPortal: React.FC<LoginPortalProps> = ({ onAuthenticated }) => {
     }
   };
   
-  const handlePrimeOverride = () => {
-    if (isScanning) return;
-    setIsScanning(true);
-    setStatus('ARCHITECT_PRIME_SIGNATURE_DETECTED...');
-    setScanProgress(0);
-  };
-
   const handleCodeLogin = () => {
     if (accessCode === 'architect_x_2025') {
-        onAuthenticated('INVERSION'); // Master Key -> Owner
+        onAuthenticated('INVERSION', true); // Master Key -> Owner (Forever)
     } else if (accessCode.startsWith('XAVIER-UL-')) {
-        onAuthenticated('ARCHITECT'); // Generated Key -> Full User Access
+        onAuthenticated('ARCHITECT', true); // Generated Key -> Full User Access (Forever)
     } else {
         setCodeError('INVALID_HASH_SIGNATURE');
         setTimeout(() => setCodeError(''), 2000);
@@ -55,13 +48,12 @@ const LoginPortal: React.FC<LoginPortalProps> = ({ onAuthenticated }) => {
     let interval: any;
     if (isScanning && scanProgress < 100) {
       interval = setInterval(() => {
-        setScanProgress(p => p + (status.includes('PRIME') ? 2 : 1));
+        setScanProgress(p => p + 1);
       }, 40);
     } else if (scanProgress >= 100 && !hasAuthRef.current) {
       hasAuthRef.current = true;
-      const isPrime = status.includes('PRIME');
-      setStatus(isPrime ? 'WELCOME_ARCHITECT' : 'SIGNATURE_VERIFIED');
-      setTimeout(() => onAuthenticated(isPrime ? 'INVERSION' : 'SOVEREIGN'), 1500);
+      setStatus('SIGNATURE_VERIFIED');
+      setTimeout(() => onAuthenticated('SOVEREIGN', false), 1500); // Default to Free Tier (Needs Upgrade)
     }
     return () => clearInterval(interval);
   }, [isScanning, scanProgress, status, onAuthenticated]);
@@ -173,19 +165,7 @@ const LoginPortal: React.FC<LoginPortalProps> = ({ onAuthenticated }) => {
               <Key size={16} className="group-hover:scale-110 transition-transform" /> Redeem Code
             </button>
         </div>
-
-        <button onClick={handlePrimeOverride} className="absolute -bottom-10 right-0 p-4 bg-purple-600/10 border-2 border-purple-500/20 rounded-full cursor-pointer hover:bg-purple-500/20 group">
-          <Crown className="text-purple-500 group-hover:text-white transition-colors" size={24} />
-        </button>
       </div>
-
-      {/* SKIP AUTH BUTTON */}
-      <button 
-        onClick={() => onAuthenticated('INVERSION')}
-        className="absolute top-6 right-6 text-gray-700 hover:text-white text-[10px] font-mono uppercase tracking-widest z-50"
-      >
-        [ SKIP_AUTH ]
-      </button>
     </div>
   );
 };

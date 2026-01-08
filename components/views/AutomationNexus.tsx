@@ -42,8 +42,9 @@ const AutomationNexus: React.FC<{ unsettledAUD: number; setUnsettledAUD: React.D
         return;
     }
 
-    if (activeTasks.includes(v.id)) return;
-    setActiveTasks(prev => [...prev, v.id]);
+    // Allow multiple concurrent deployments of the same vector
+    const taskId = `${v.id}-${Date.now()}-${Math.random()}`;
+    setActiveTasks(prev => [...prev, taskId]);
     setLogs(prev => [`[${new Date().toLocaleTimeString()}] DEPLOYING_SWARM: ${v.name}...`, ...prev.slice(0, 10)]);
 
     try {
@@ -54,7 +55,7 @@ const AutomationNexus: React.FC<{ unsettledAUD: number; setUnsettledAUD: React.D
     } catch (e) {
       setLogs(prev => ["ERR: Neural link saturated.", ...prev]);
     } finally {
-      setActiveTasks(prev => prev.filter(id => id !== v.id));
+      setActiveTasks(prev => prev.filter(id => id !== taskId));
     }
   };
 
@@ -64,7 +65,7 @@ const AutomationNexus: React.FC<{ unsettledAUD: number; setUnsettledAUD: React.D
         return;
     }
 
-    const available = VECTORS.filter(v => !activeTasks.includes(v.id));
+    const available = VECTORS; // Deploy all vectors regardless of current activity
     if (available.length === 0) return;
     
     setLogs(prev => [`[COMMAND] MASS_DEPLOYMENT_INITIATED: ${available.length} VECTORS`, ...prev]);
@@ -108,8 +109,8 @@ const AutomationNexus: React.FC<{ unsettledAUD: number; setUnsettledAUD: React.D
                 <div className="p-5 rounded-[2rem] bg-black border-2 border-white/5 text-amber-500 group-hover:rotate-12 transition-transform">
                    <v.icon size={32} />
                 </div>
-                <div className={`px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${activeTasks.includes(v.id) ? 'bg-cyan-600 border-cyan-400 text-white animate-pulse' : 'bg-black border-white/5 text-gray-600'}`}>
-                   {activeTasks.includes(v.id) ? 'EXECUTING' : 'READY'}
+                <div className={`px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${activeTasks.some(t => t.startsWith(v.id)) ? 'bg-cyan-600 border-cyan-400 text-white animate-pulse' : 'bg-black border-white/5 text-gray-600'}`}>
+                   {activeTasks.filter(t => t.startsWith(v.id)).length > 0 ? `EXECUTING (${activeTasks.filter(t => t.startsWith(v.id)).length})` : 'READY'}
                 </div>
              </div>
              <div>
@@ -118,7 +119,7 @@ const AutomationNexus: React.FC<{ unsettledAUD: number; setUnsettledAUD: React.D
              </div>
              <div className="pt-6 border-t border-white/5 flex justify-between items-center mt-auto">
                 <p className="text-3xl font-black text-emerald-400 tabular-nums italic">A$${v.yield}</p>
-                <button onClick={() => handleDeploy(v)} disabled={activeTasks.includes(v.id)} className="w-16 h-16 rounded-3xl bg-white text-black flex items-center justify-center hover:bg-amber-500 hover:text-white transition-all shadow-2xl">
+                <button onClick={() => handleDeploy(v)} className="w-16 h-16 rounded-3xl bg-white text-black flex items-center justify-center hover:bg-amber-500 hover:text-white transition-all shadow-2xl active:scale-90">
                    <ArrowRight size={24} />
                 </button>
              </div>
