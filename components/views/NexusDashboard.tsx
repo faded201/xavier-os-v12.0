@@ -245,7 +245,7 @@ const NexusDashboard: React.FC<{
 
     switch (view) {
       case 'dashboard': return <Dashboard setView={setView} isOwner={props.user.isOwner} userTier={props.user.tier} />;
-      case 'automation_nexus': return <AutomationNexus setUnsettledAUD={props.setUnsettledAUD} />;
+      case 'automation_nexus': return <AutomationNexus unsettledAUD={props.unsettledAUD} setUnsettledAUD={props.setUnsettledAUD} />;
       case 'logistics_nexus': return <LogisticsNexus />;
       case 'wealth_gate': return <AutoMonetizer unsettledAUD={props.unsettledAUD} setUnsettledAUD={props.setUnsettledAUD} tier={props.user.tier} setView={setView} speak={speak} />;
       case 'key_forge': return <ArchitectKeyGen />;
@@ -375,7 +375,7 @@ const NexusDashboard: React.FC<{
                     </button>
                 </div>
                 <div className="flex-1 overflow-y-auto p-2 md:p-8">
-                    <AutomationNexus setUnsettledAUD={props.setUnsettledAUD} />
+                    <AutomationNexus unsettledAUD={props.unsettledAUD} setUnsettledAUD={props.setUnsettledAUD} />
                 </div>
             </div>
         </div>

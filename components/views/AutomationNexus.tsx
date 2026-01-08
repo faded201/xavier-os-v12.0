@@ -32,11 +32,16 @@ const VECTORS = [
     { id: 'v25', name: 'Virtual Assistant Swarm', category: 'Service', yield: 300.00, icon: Users, outcome: 'Outsourced admin tasks' },
 ];
 
-const AutomationNexus: React.FC<{ setUnsettledAUD: React.Dispatch<React.SetStateAction<number>> }> = ({ setUnsettledAUD }) => {
+const AutomationNexus: React.FC<{ unsettledAUD: number; setUnsettledAUD: React.Dispatch<React.SetStateAction<number>> }> = ({ unsettledAUD, setUnsettledAUD }) => {
   const [activeTasks, setActiveTasks] = useState<string[]>([]);
   const [logs, setLogs] = useState<string[]>(["[AUTOMATION_CORE] System standby. 30+ Vectors ready."]);
 
   const handleDeploy = async (v: typeof VECTORS[0]) => {
+    if (unsettledAUD >= 1000000000) {
+        alert("VAULT LIMIT REACHED (A$1,000,000,000).\n\nCAPACITY FULL. PLEASE WITHDRAW FUNDS TO BANK TO RESUME OPERATIONS.");
+        return;
+    }
+
     if (activeTasks.includes(v.id)) return;
     setActiveTasks(prev => [...prev, v.id]);
     setLogs(prev => [`[${new Date().toLocaleTimeString()}] DEPLOYING_SWARM: ${v.name}...`, ...prev.slice(0, 10)]);
@@ -54,6 +59,11 @@ const AutomationNexus: React.FC<{ setUnsettledAUD: React.Dispatch<React.SetState
   };
 
   const handleDeployAll = () => {
+    if (unsettledAUD >= 1000000000) {
+        alert("VAULT LIMIT REACHED (A$1,000,000,000).\n\nCAPACITY FULL. PLEASE WITHDRAW FUNDS TO BANK TO RESUME OPERATIONS.");
+        return;
+    }
+
     const available = VECTORS.filter(v => !activeTasks.includes(v.id));
     if (available.length === 0) return;
     
