@@ -11,7 +11,7 @@ interface Props {
   speak: (t: string) => void;
 }
 
-const AutoMonetizer: React.FC<Props> = ({ unsettledAUD, setUnsettledAUD, setView, speak }) => {
+const AutoMonetizer: React.FC<Props> = ({ unsettledAUD, setUnsettledAUD, speak }) => {
   const [stripeStatus, setStripeStatus] = useState<'OFFLINE' | 'CONNECTED' | 'LIVE_PRODUCTION'>('OFFLINE');
   const [isSettling, setIsSettling] = useState(false);
   const [showConfig, setShowConfig] = useState(false);

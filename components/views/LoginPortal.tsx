@@ -26,7 +26,7 @@ const LoginPortal: React.FC<LoginPortalProps> = ({ onAuthenticated }) => {
         .then(stream => {
           if (videoRef.current) videoRef.current.srcObject = stream;
         })
-        .catch(e => console.log("Camera simulation mode active"));
+        .catch(() => console.log("Camera simulation mode active"));
     }
   };
   
