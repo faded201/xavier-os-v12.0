@@ -7,11 +7,18 @@ import NexusDashboard from './components/views/NexusDashboard';
 import ErrorBoundary from './ErrorBoundary';
 
 const App: React.FC = () => {
-  const [user, setUser] = useState<UserState | null>(null);
+  const [user, setUser] = useState<UserState | null>(() => {
+    try {
+      const saved = localStorage.getItem('xavier_user_session');
+      return saved ? JSON.parse(saved) : null;
+    } catch (e) {
+      return null;
+    }
+  });
   const [isBooting, setIsBooting] = useState(false);
   const [unsettledBalance, setUnsettledBalance] = useState(() => {
     const saved = localStorage.getItem('xavier_balance');
-    return saved ? parseFloat(saved) : 0;
+    return saved && !isNaN(parseFloat(saved)) ? parseFloat(saved) : 0;
   });
   const [platformRevenue, setPlatformRevenue] = useState(() => {
     const saved = localStorage.getItem('xavier_revenue');
@@ -23,6 +30,14 @@ const App: React.FC = () => {
   const [activePersona, setActivePersona] = useState<any>(null);
 
   // Effect to simulate linking to backend/AI data stream on load
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('xavier_user_session', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('xavier_user_session');
+    }
+  }, [user]);
+
   useEffect(() => {
     localStorage.setItem('xavier_balance', unsettledBalance.toString());
   }, [unsettledBalance]);
@@ -97,7 +112,7 @@ const App: React.FC = () => {
           // No simulation fallback. Real-world functionality requires user action.
         }
       }
-    };
+       
 
     if (user) {
       syncWithBackend();

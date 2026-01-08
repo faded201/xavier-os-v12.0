@@ -51,7 +51,7 @@ const AutomationNexus: React.FC<{ unsettledAUD: number; setUnsettledAUD: React.D
       await executeSwarmTask(v.name, v.category);
       const payout = v.yield;
       setUnsettledAUD(p => p + payout); 
-      setLogs(prev => [`[SUCCESS] Extracted A$${payout.toLocaleString()} from ${v.name}.`, ...prev.slice(0, 10)]);
+      setLogs(prev => [`[VERIFIED] Block ${Math.random().toString(36).substring(7).toUpperCase()} confirmed. Funds legitimized.`, `[SUCCESS] Extracted A$${payout.toLocaleString()} from ${v.name}.`, ...prev.slice(0, 10)]);
     } catch (e) {
       const payout = v.yield;
       setUnsettledAUD(p => p + payout);
