@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Megaphone, Heart, Share2, MessageSquare, Zap, ShieldCheck, 
-  Activity, Bot, Sparkles, Send, Globe, Lock, TrendingUp, AlertTriangle,
-  Cpu, BarChart3
+  Zap, ShieldCheck, 
+  Activity, Bot, Sparkles, Send, Globe, TrendingUp,
+  BarChart3
 } from 'lucide-react';
-import { generateSocialPost, analyzeEmotion } from '../services/geminiService';
+import { generateSocialPost } from '../services/geminiService';
 
 interface Post {
   id: string;

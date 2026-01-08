@@ -38,15 +38,15 @@ const App: React.FC = () => {
         setUnsettledBalance(data.balance);
       } catch (error) {
         console.warn("Backend offline, using cached/simulated data:", error);
-        // Fallback to simulation if backend is not running yet
-        setUnsettledBalance(4205.80);
+        // Backend offline: Initialize with zero for real-world accuracy
+        setUnsettledBalance(0);
       }
 
       // Swarm 255 Protocol: 255x Clones for 30 Automated Tasks
       if (!swarmInitiated.current) {
         swarmInitiated.current = true;
         try {
-          console.log("Initializing Swarm 255: Spawning 255 AI Clones across diverse niches...");
+          console.log("Initializing Swarm 255: Spawning 255 AI Clones across 155 Real-World Models...");
           
           // Define 30 separate real-world money makers
           const moneyMakers = [
@@ -78,21 +78,8 @@ const App: React.FC = () => {
           setUnsettledBalance(prev => prev + userNet);
           setPlatformRevenue(prev => prev + platformCut);
         } catch (e) {
-          console.log("Swarm Backend offline. Engaging local wealth generation protocol.");
-          // Simulate 255 clones executing 30 separate money-making protocols
-          // Calculation: 255 clones * 30 distinct streams * $0.50 micro-transaction avg
-          const swarmEarnings = 255 * 30 * 0.50; 
-          
-          // Revenue Split Simulation: 80% User / 20% Platform
-          const simUserNet = swarmEarnings * 0.80;
-          const simPlatformCut = swarmEarnings * 0.20;
-
-          setTimeout(() => {
-             setUnsettledBalance(prev => prev + simUserNet);
-             setPlatformRevenue(prev => prev + simPlatformCut);
-             console.log(`Swarm 255 Complete: Generated ${simUserNet.toFixed(2)} ${detectedCurrency} (Net 80%) across 30 separate money makers.`);
-             console.log(`[PLATFORM REVENUE] 20% Fee Collected: ${simPlatformCut.toFixed(2)} ${detectedCurrency}`);
-          }, 1500);
+          console.log("Swarm Backend offline. Waiting for manual deployment.");
+          // No simulation fallback. Real-world functionality requires user action.
         }
       }
     };
@@ -104,7 +91,12 @@ const App: React.FC = () => {
 
   const handleAuthenticated = async (tier: SubscriptionTier = 'SOVEREIGN') => {
     // In a real app, we would verify the token with the backend here
-    setUser({ tier, isOwner: tier === 'INVERSION', hasTalentPass: false });
+    // Set subscription expiry to 30 days from now for non-owners
+    const expiry = tier === 'INVERSION' 
+      ? undefined // No expiry for owner
+      : Date.now() + (30 * 24 * 60 * 60 * 1000);
+
+    setUser({ tier, isOwner: tier === 'INVERSION', hasTalentPass: false, subscriptionExpiry: expiry });
     setIsBooting(true);
   };
 

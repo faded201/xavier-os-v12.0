@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Fingerprint, Radio, Crown } from 'lucide-react';
+import { Scan, Radio, Crown, CreditCard, ArrowLeft } from 'lucide-react';
 import { SubscriptionTier } from '../types';
+import QuantumTreasury from './QuantumTreasury';
 
 interface LoginPortalProps {
   onAuthenticated: (tier?: SubscriptionTier) => void;
@@ -9,13 +10,24 @@ interface LoginPortalProps {
 const LoginPortal: React.FC<LoginPortalProps> = ({ onAuthenticated }) => {
   const [isScanning, setIsScanning] = useState(false);
   const [scanProgress, setScanProgress] = useState(0);
-  const [status, setStatus] = useState('AWAITING_BIOMETRIC_INPUT');
+  const [status, setStatus] = useState('AWAITING_FACE_ID');
+  const [showMemberships, setShowMemberships] = useState(false);
   const hasAuthRef = useRef(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const startSecureScan = () => {
     if (isScanning) return;
     setIsScanning(true);
-    setStatus('ANALYZING_BIOMETRIC_SIGNATURE...');
+    setStatus('ANALYZING_FACIAL_TOPOGRAPHY...');
+    
+    // Simulate Camera Activation
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+          if (videoRef.current) videoRef.current.srcObject = stream;
+        })
+        .catch(e => console.log("Camera simulation mode active"));
+    }
   };
   
   const handlePrimeOverride = () => {
@@ -40,6 +52,26 @@ const LoginPortal: React.FC<LoginPortalProps> = ({ onAuthenticated }) => {
     return () => clearInterval(interval);
   }, [isScanning, scanProgress, status, onAuthenticated]);
 
+  if (showMemberships) {
+    return (
+      <div className="w-full h-full bg-black overflow-y-auto animate-in slide-in-from-bottom duration-500">
+        <div className="fixed top-4 left-4 z-50">
+          <button onClick={() => setShowMemberships(false)} className="flex items-center gap-2 text-white bg-black/50 p-3 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all">
+            <ArrowLeft size={20} /> <span className="text-xs font-bold">BACK TO LOGIN</span>
+          </button>
+        </div>
+        <div className="pt-20 pb-10">
+          <QuantumTreasury 
+            tier="OPERATIVE" 
+            startTrial={(t) => { alert(`MEMBERSHIP SELECTED: ${t}\nRedirecting to Stripe Secure Gateway...`); setShowMemberships(false); }} 
+            isOwner={false} 
+            setView={() => {}} 
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full h-full flex flex-col items-center justify-center bg-black p-4 font-sans text-white overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(245,158,11,0.03),transparent_60%)]"></div>
@@ -62,8 +94,11 @@ const LoginPortal: React.FC<LoginPortalProps> = ({ onAuthenticated }) => {
           <div className="absolute inset-4 border border-dashed border-amber-500/20 rounded-full animate-[spin_20s_linear_infinite_reverse]"></div>
           <div className={`absolute inset-0 rounded-full bg-amber-500/5 transition-opacity duration-500 ${isScanning ? 'opacity-100 animate-pulse' : 'opacity-0'}`}></div>
 
-          <div className="w-48 h-48 md:w-56 md:h-56 bg-black rounded-full border-4 border-amber-500/20 flex items-center justify-center shadow-[0_0_80px_rgba(0,0,0,0.9)] relative">
-            <Fingerprint size={100} className={`transition-colors duration-500 ${isScanning ? 'text-amber-500' : 'text-gray-800 group-hover:text-amber-500/30'}`} />
+          <div className="w-48 h-48 md:w-56 md:h-56 bg-black rounded-full border-4 border-amber-500/20 flex items-center justify-center shadow-[0_0_80px_rgba(0,0,0,0.9)] relative overflow-hidden">
+            {isScanning && (
+              <video ref={videoRef} autoPlay playsInline muted className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-screen" />
+            )}
+            <Scan size={100} className={`relative z-10 transition-colors duration-500 ${isScanning ? 'text-amber-500' : 'text-gray-800 group-hover:text-amber-500/30'}`} />
           </div>
 
           <svg className="absolute inset-[-2px] w-[calc(100%+4px)] h-[calc(100%+4px)]" viewBox="0 0 100 100">
@@ -83,9 +118,17 @@ const LoginPortal: React.FC<LoginPortalProps> = ({ onAuthenticated }) => {
               <span>{status}</span>
             </div>
             <p className="text-xs text-gray-700 font-bold uppercase tracking-[0.3em]">
-                {scanProgress < 100 ? "Place Biometric Signature to Authenticate" : "Handshake Complete"}
+                {scanProgress < 100 ? "Align Face for Biometric Scan" : "Identity Verified"}
             </p>
         </div>
+
+        <button 
+          onClick={() => setShowMemberships(true)}
+          className="mt-4 px-8 py-3 bg-gray-900 border border-gray-700 rounded-full flex items-center gap-3 text-xs font-bold uppercase tracking-widest hover:bg-amber-500 hover:text-black hover:border-amber-500 transition-all group"
+        >
+          <CreditCard size={16} className="group-hover:scale-110 transition-transform" /> View Memberships & Pricing
+        </button>
+
         <button onClick={handlePrimeOverride} className="absolute -bottom-10 right-0 p-4 bg-purple-600/10 border-2 border-purple-500/20 rounded-full cursor-pointer hover:bg-purple-500/20 group">
           <Crown className="text-purple-500 group-hover:text-white transition-colors" size={24} />
         </button>

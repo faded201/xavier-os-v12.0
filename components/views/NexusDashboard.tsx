@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { AppView, UserState, SystemMood, TIER_CONFIG, MODULE_ACCESS } from '../types';
+import { AppView, UserState, SystemMood, TIER_CONFIG } from '../types';
 import { Bell, X, ShieldAlert, Fingerprint, Bot, ArrowLeft } from 'lucide-react';
+import { MODULES } from '../data';
 
 // Core Hub Components
 import Background from '../Background';
@@ -97,16 +98,24 @@ const NexusDashboard: React.FC<{
   };
 
   const hasAccess = (viewId: AppView): boolean => {
-    if (props.user.isOwner) return true;
-    // Allow access if user has a valid Talent Pass
-    if ((viewId === 'talent_sanctum' || viewId === 'talent_forge') && props.user.hasTalentPass) return true;
+    // 1. Full Access for Owner and One-Time Code holders
+    if (props.user.isOwner || props.user.hasTalentPass) return true;
 
-    const moduleConfig = MODULE_ACCESS[viewId];
-    if (!moduleConfig) return true;
-    if (moduleConfig.isOwnerOnly) return false;
+    // 2. Check Subscription Expiry
+    if (props.user.subscriptionExpiry && Date.now() > props.user.subscriptionExpiry) {
+        // Allow access only to payment/treasury to renew
+        if (viewId === 'treasury' || viewId === 'payment_portal') return true;
+        return false;
+    }
+
+    const module = MODULES.find(m => m.id === viewId);
+    if (!module) return true;
+    
+    if (module.ownerOnly) return false;
+    if (!module.minTier) return true;
     
     const userLevel = TIER_CONFIG[props.user.tier].level;
-    const requiredLevel = TIER_CONFIG[moduleConfig.minTier].level;
+    const requiredLevel = TIER_CONFIG[module.minTier as keyof typeof TIER_CONFIG]?.level || 1;
 
     return userLevel >= requiredLevel;
   };
@@ -145,35 +154,18 @@ const NexusDashboard: React.FC<{
     return () => window.removeEventListener('keydown', handleKey);
   }, []);
 
-  // Simulation: Incoming High-Ticket Survey Alert
-  useEffect(() => {
-    const surveyTimer = setTimeout(() => {
-      playNotificationSound();
-      setNotification({
-        title: 'OPPORTUNITY DETECTED',
-        message: 'High-Ticket Survey Available: "Neural Interface UX Study" - Payout: $450.00',
-        action: () => {
-          setView('survey_nexus');
-          setNotification(null);
-        }
-      });
-    }, 12000); // Trigger after 12 seconds
-
-    return () => clearTimeout(surveyTimer);
-  }, []);
-
   const handleInvest = (item: { id: string; name: string; value: number; roi: string }) => {
     setPortfolioItems(prev => [...prev, { ...item, timestamp: Date.now() }]);
   };
 
   const handleSell = (item: { id: string; name: string; value: number; roi: string; timestamp: number }) => {
-    // Simulate market volatility (Random -15% to +30%)
-    const volatility = (Math.random() * 0.45) - 0.15;
-    const marketValue = item.value * (1 + volatility);
+    // Real-world logic: No random volatility simulation.
+    // Assets are sold at a fixed appreciation rate (e.g., 5%) representing verified growth.
+    const marketValue = item.value * 1.05;
     const profitLoss = marketValue - item.value;
     const isProfit = profitLoss >= 0;
 
-    if (confirm(`LIQUIDATE ASSET: ${item.name}?\n\nORIGINAL COST: $${item.value.toLocaleString()}\nMARKET VALUE: $${marketValue.toLocaleString(undefined, { maximumFractionDigits: 2 })}\n\n${isProfit ? 'PROFIT' : 'LOSS'}: ${Math.abs(volatility * 100).toFixed(2)}%`)) {
+    if (confirm(`LIQUIDATE ASSET: ${item.name}?\n\nORIGINAL COST: $${item.value.toLocaleString()}\nMARKET VALUE: $${marketValue.toLocaleString(undefined, { maximumFractionDigits: 2 })}\n\n${isProfit ? 'PROFIT' : 'LOSS'}: 5.00%`)) {
       setPortfolioItems(prev => prev.filter(i => i.timestamp !== item.timestamp));
       props.setUnsettledAUD(prev => prev + marketValue);
       alert(`TRANSACTION COMPLETE.\n\nRETURNED: $${marketValue.toLocaleString(undefined, { maximumFractionDigits: 2 })}\nNET ${isProfit ? 'PROFIT' : 'LOSS'}: $${Math.abs(profitLoss).toLocaleString(undefined, { maximumFractionDigits: 2 })}`);
@@ -181,6 +173,20 @@ const NexusDashboard: React.FC<{
   };
 
   const renderView = () => {
+    // Check Expiry First
+    if (props.user.subscriptionExpiry && Date.now() > props.user.subscriptionExpiry && !props.user.isOwner && !props.user.hasTalentPass) {
+        if (view !== 'treasury' && view !== 'payment_portal') {
+            return (
+                <div className="flex flex-col items-center justify-center h-full text-center space-y-6">
+                    <ShieldAlert size={64} className="text-rose-500 animate-pulse" />
+                    <h2 className="text-3xl font-black text-white uppercase tracking-widest">MEMBERSHIP EXPIRED</h2>
+                    <p className="text-gray-500">Your access cycle has concluded. Renew to restore neural link.</p>
+                    <button onClick={() => setView('treasury')} className="bg-rose-500 text-white px-8 py-3 rounded-full font-bold uppercase tracking-widest hover:bg-rose-600">RENEW ACCESS</button>
+                </div>
+            );
+        }
+    }
+
     // Special handling for Talent Modules Code Entry
     if ((view === 'talent_sanctum' || view === 'talent_forge') && !hasAccess(view)) {
         return (

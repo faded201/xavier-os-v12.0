@@ -25,14 +25,15 @@ export interface UserState {
   tier: SubscriptionTier;
   isOwner: boolean;
   hasTalentPass?: boolean;
+  subscriptionExpiry?: number;
 }
 
-export const TIER_CONFIG: Record<SubscriptionTier, { level: number, price: string, color: string, features: string[] }> = {
-  SOVEREIGN: { level: 0, price: 'FREE', color: 'text-gray-500', features: ['Core OS Access', 'Standard Security', 'Registry Access'] },
-  OPERATIVE: { level: 1, price: 'A$49/mo', color: 'text-blue-500', features: ['Sovereign Features', 'Automation Nexus', 'Creative Studio', 'Social Nexus'] },
-  ARCHITECT: { level: 2, price: 'A$499/mo', color: 'text-emerald-500', features: ['Operative Features', 'Swarm-255 Access', 'Wealth Gate Extraction', 'Terminal Access'] },
-  MAGISTRATE: { level: 3, price: 'A$1,999/mo', color: 'text-rose-500', features: ['Architect Features', 'War Room & Tactical Modules', 'Source Code Access'] },
-  INVERSION: { level: 4, price: 'UNLIMITED', color: 'text-purple-500', features: ['Root Prime Access', 'All Modules Unlocked', 'System Governance Control'] },
+export const TIER_CONFIG: Record<SubscriptionTier, { level: number, price: string, priceYearly: string, color: string, features: string[] }> = {
+  SOVEREIGN: { level: 0, price: 'FREE', priceYearly: 'FREE', color: 'text-gray-500', features: ['Core OS Access', 'Standard Security', 'Registry Access'] },
+  OPERATIVE: { level: 1, price: 'A$49/mo', priceYearly: 'A$499/yr', color: 'text-blue-500', features: ['Sovereign Features', 'Automation Nexus', 'Creative Studio', 'Social Nexus'] },
+  ARCHITECT: { level: 2, price: 'A$499/mo', priceYearly: 'A$4,999/yr', color: 'text-emerald-500', features: ['Operative Features', 'Swarm-255 Access', 'Wealth Gate Extraction', 'Terminal Access'] },
+  MAGISTRATE: { level: 3, price: 'A$1,999/mo', priceYearly: 'A$19,999/yr', color: 'text-rose-500', features: ['Architect Features', 'War Room & Tactical Modules', 'Source Code Access'] },
+  INVERSION: { level: 4, price: 'UNLIMITED', priceYearly: 'UNLIMITED', color: 'text-purple-500', features: ['Root Prime Access', 'All Modules Unlocked', 'System Governance Control'] },
 };
 
 export const MODULE_ACCESS: Partial<Record<AppView, { minTier: SubscriptionTier, isOwnerOnly?: boolean }>> = {

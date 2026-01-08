@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Landmark, Star, Swords, Globe, CheckCircle2, Crown, User } from 'lucide-react';
 import { SubscriptionTier, TIER_CONFIG } from '../types';
 
@@ -11,6 +11,7 @@ interface Props {
 }
 
 const QuantumTreasury: React.FC<Props> = ({ tier, isOwner }) => {
+  const [billingCycle, setBillingCycle] = useState<'MONTHLY' | 'YEARLY'>('MONTHLY');
   const tiers = [
     { id: 'SOVEREIGN', name: 'Sovereign', icon: Globe },
     { id: 'OPERATIVE', name: 'Operative', icon: User, popular: true },
@@ -33,6 +34,11 @@ const QuantumTreasury: React.FC<Props> = ({ tier, isOwner }) => {
               <div className="flex items-center gap-6 mt-12 justify-center md:justify-start">
                  <div className="w-5 h-5 rounded-full bg-amber-500 animate-ping"></div>
                  <span className="text-base font-black uppercase tracking-[0.6em] text-amber-400 italic">SYSTEM_LEDGER // CURRENT_TIER: {tier}</span>
+              </div>
+              
+              <div className="flex justify-center md:justify-start gap-4 mt-6">
+                <button onClick={() => setBillingCycle('MONTHLY')} className={`px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${billingCycle === 'MONTHLY' ? 'bg-white text-black' : 'bg-gray-800 text-gray-500'}`}>Monthly</button>
+                <button onClick={() => setBillingCycle('YEARLY')} className={`px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${billingCycle === 'YEARLY' ? 'bg-white text-black' : 'bg-gray-800 text-gray-500'}`}>Yearly (Save 20%)</button>
               </div>
             </div>
           </div>
@@ -58,7 +64,7 @@ const QuantumTreasury: React.FC<Props> = ({ tier, isOwner }) => {
                       {isCurrent && <span className="bg-amber-500 text-black px-4 py-1 rounded-full text-[9px] font-black uppercase italic">Active Tier</span>}
                   </div>
                   <h3 className="text-4xl font-black text-white uppercase italic tracking-tighter leading-none font-fantasy">{t.name}</h3>
-                  <p className={`text-2xl font-black italic ${config.color}`}>{config.price}</p>
+                  <p className={`text-2xl font-black italic ${config.color}`}>{billingCycle === 'MONTHLY' ? config.price : config.priceYearly}</p>
                   <div className="space-y-4 pt-6 border-t border-white/5">
                      {config.features.map(f => (
                        <div key={f} className="flex items-center gap-3">
