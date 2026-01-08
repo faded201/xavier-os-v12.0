@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Scan, Radio, Crown, CreditCard, ArrowLeft } from 'lucide-react';
+import { Scan, Radio, Crown, CreditCard, ArrowLeft, Key } from 'lucide-react';
 import { SubscriptionTier } from '../types';
 import QuantumTreasury from './QuantumTreasury';
 
@@ -12,6 +12,9 @@ const LoginPortal: React.FC<LoginPortalProps> = ({ onAuthenticated }) => {
   const [scanProgress, setScanProgress] = useState(0);
   const [status, setStatus] = useState('AWAITING_FACE_ID');
   const [showMemberships, setShowMemberships] = useState(false);
+  const [showCodeInput, setShowCodeInput] = useState(false);
+  const [accessCode, setAccessCode] = useState('');
+  const [codeError, setCodeError] = useState('');
   const hasAuthRef = useRef(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -35,6 +38,17 @@ const LoginPortal: React.FC<LoginPortalProps> = ({ onAuthenticated }) => {
     setIsScanning(true);
     setStatus('ARCHITECT_PRIME_SIGNATURE_DETECTED...');
     setScanProgress(0);
+  };
+
+  const handleCodeLogin = () => {
+    if (accessCode === 'architect_x_2025') {
+        onAuthenticated('INVERSION'); // Master Key -> Owner
+    } else if (accessCode.startsWith('XAVIER-UL-')) {
+        onAuthenticated('ARCHITECT'); // Generated Key -> Full User Access
+    } else {
+        setCodeError('INVALID_HASH_SIGNATURE');
+        setTimeout(() => setCodeError(''), 2000);
+    }
   };
 
   useEffect(() => {
@@ -70,6 +84,29 @@ const LoginPortal: React.FC<LoginPortalProps> = ({ onAuthenticated }) => {
         </div>
       </div>
     );
+  }
+
+  if (showCodeInput) {
+      return (
+          <div className="w-full h-full bg-black flex flex-col items-center justify-center p-4 animate-in fade-in">
+              <div className="max-w-md w-full bg-gray-900 border border-white/10 p-8 rounded-2xl text-center relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent"></div>
+                  <h2 className="text-2xl font-black text-white mb-6 tracking-widest italic">ACCESS OVERRIDE</h2>
+                  <input 
+                    type="text" 
+                    value={accessCode}
+                    onChange={(e) => setAccessCode(e.target.value)}
+                    placeholder="ENTER_LICENSE_KEY"
+                    className="w-full bg-black border border-gray-700 p-4 rounded-xl text-center text-emerald-500 font-mono text-lg outline-none focus:border-emerald-500 mb-4 uppercase tracking-widest placeholder:text-gray-800"
+                  />
+                  {codeError && <p className="text-red-500 text-xs font-bold mb-4 animate-pulse">{codeError}</p>}
+                  <div className="flex gap-4">
+                      <button onClick={() => setShowCodeInput(false)} className="flex-1 py-3 rounded-xl border border-gray-700 text-gray-500 hover:text-white font-bold text-xs tracking-widest">CANCEL</button>
+                      <button onClick={handleCodeLogin} className="flex-1 py-3 rounded-xl bg-emerald-500 text-black font-bold hover:bg-emerald-400 text-xs tracking-widest">AUTHENTICATE</button>
+                  </div>
+              </div>
+          </div>
+      )
   }
 
   return (
@@ -122,12 +159,20 @@ const LoginPortal: React.FC<LoginPortalProps> = ({ onAuthenticated }) => {
             </p>
         </div>
 
-        <button 
-          onClick={() => setShowMemberships(true)}
-          className="mt-4 px-8 py-3 bg-gray-900 border border-gray-700 rounded-full flex items-center gap-3 text-xs font-bold uppercase tracking-widest hover:bg-amber-500 hover:text-black hover:border-amber-500 transition-all group"
-        >
-          <CreditCard size={16} className="group-hover:scale-110 transition-transform" /> View Memberships & Pricing
-        </button>
+        <div className="flex flex-col md:flex-row gap-4 mt-4">
+            <button 
+              onClick={() => setShowMemberships(true)}
+              className="px-8 py-3 bg-gray-900 border border-gray-700 rounded-full flex items-center gap-3 text-xs font-bold uppercase tracking-widest hover:bg-amber-500 hover:text-black hover:border-amber-500 transition-all group"
+            >
+              <CreditCard size={16} className="group-hover:scale-110 transition-transform" /> Memberships
+            </button>
+            <button 
+              onClick={() => setShowCodeInput(true)}
+              className="px-8 py-3 bg-gray-900 border border-gray-700 rounded-full flex items-center gap-3 text-xs font-bold uppercase tracking-widest hover:bg-emerald-500 hover:text-black hover:border-emerald-500 transition-all group"
+            >
+              <Key size={16} className="group-hover:scale-110 transition-transform" /> Redeem Code
+            </button>
+        </div>
 
         <button onClick={handlePrimeOverride} className="absolute -bottom-10 right-0 p-4 bg-purple-600/10 border-2 border-purple-500/20 rounded-full cursor-pointer hover:bg-purple-500/20 group">
           <Crown className="text-purple-500 group-hover:text-white transition-colors" size={24} />

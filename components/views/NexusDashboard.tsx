@@ -92,13 +92,35 @@ const NexusDashboard: React.FC<{
 
   const handleCodeSubmit = () => {
     // Verify One-Time Code (In production, verify with backend)
-    const validCodes = ['XAVIER-GENESIS', 'TALENT-ACCESS-01', 'LEANNE-PRIME', 'architect_x_2025'];
+    const validCodes = ['XAVIER-GENESIS', 'TALENT-ACCESS-01', 'LEANNE-PRIME'];
+    
+    if (accessCode === 'architect_x_2025') {
+        // Master Key Upgrade: Grants Owner Status immediately
+        props.setUser(prev => prev ? ({ ...prev, tier: 'INVERSION', isOwner: true }) : null);
+        setCodeError('');
+        return;
+    }
+
     if (validCodes.includes(accessCode) || accessCode.startsWith('XAVIER-UL-')) {
       props.setUser(prev => prev ? ({ ...prev, hasTalentPass: true }) : null);
       setCodeError('');
     } else {
       setCodeError('INVALID ACCESS CODE');
     }
+  };
+
+  const handleRedeem = (code: string) => {
+    if (code === 'architect_x_2025') {
+        props.setUser(prev => prev ? ({ ...prev, tier: 'INVERSION', isOwner: true }) : null);
+        alert("ROOT ACCESS GRANTED. KEY FORGE UNLOCKED.");
+        return true;
+    }
+    if (code.startsWith('XAVIER-UL-')) {
+         props.setUser(prev => prev ? ({ ...prev, tier: 'ARCHITECT', hasTalentPass: true }) : null);
+         alert("ARCHITECT ACCESS GRANTED.");
+         return true;
+    }
+    return false;
   };
 
   const hasAccess = (viewId: AppView): boolean => {
@@ -233,7 +255,7 @@ const NexusDashboard: React.FC<{
       case 'platform_treasury': return <PlatformTreasury revenue={props.platformRevenue} currency={props.currency} onBack={() => setView('dashboard')} />;
       case 'survey_nexus': return <SurveyNexus setUnsettledAUD={props.setUnsettledAUD} setPlatformRevenue={props.setPlatformRevenue} />;
       case 'social_nexus': return <SocialNexus />;
-      case 'user_profile': return <UserProfile user={props.user} activePersona={props.activePersona} onLogout={props.onLogout} />;
+      case 'user_profile': return <UserProfile user={props.user} activePersona={props.activePersona} onLogout={props.onLogout} onRedeem={handleRedeem} />;
       case 'payment_portal': return <PaymentPortal targetTier={selectedUpgradeTier} onBack={() => setView('treasury')} />;
       case 'equity_vault': return <EquityVault setUnsettledAUD={props.setUnsettledAUD} onInvest={handleInvest} />;
       case 'mastermind_nexus': return <MastermindNexus setUnsettledAUD={props.setUnsettledAUD} />;

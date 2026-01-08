@@ -31,7 +31,7 @@ const ArchitectKeyGen: React.FC = () => {
                 <ShieldCheck size={64} className="mx-auto mb-6 text-[var(--primary)]" />
                 <h2 className="text-2xl font-bold text-white mb-4">Generate Master Key</h2>
                 <p className="text-sm opacity-60 mb-8">
-                    Create a unique, one-time use access code that grants <span className="text-emerald-500 font-bold">UNLIMITED LIFETIME ACCESS</span> to the recipient.
+                    Create a unique, one-time use access code that grants <span className="text-emerald-500 font-bold">ARCHITECT TIER (FULL ACCESS)</span> to the recipient.
                 </p>
                 <button 
                     onClick={generateKey}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   LayoutGrid, Swords, 
-  ShieldCheck, ArrowRight, Zap, Layers, 
+  ShieldCheck, ArrowRight, Zap, Layers, Key,
   Star, Ghost, Warehouse, ReceiptText, Eye, Lock, X, Crown
 } from 'lucide-react';
 import { AppView, SubscriptionTier } from '../types';
@@ -33,6 +33,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setView, isOwner, userTier }) => 
       { id: 'warroom', label: 'WAR ROOM', icon: Swords, desc: 'Tactical command hub.', color: 'text-rose-500', minTier: 'MAGISTRATE' },
       { id: 'security', label: 'SANCTUM', icon: ShieldCheck, desc: 'Neural shielding protocols.', color: 'text-blue-500', minTier: 'MAGISTRATE' },
       { id: 'sentinel', label: 'SENTINEL', icon: Eye, desc: 'Biometric monitoring.', color: 'text-emerald-400' },
+      ...(isOwner ? [{ id: 'key_forge', label: 'KEY FORGE', icon: Key, desc: 'Generate Access Codes.', color: 'text-purple-500' }] : []),
     ]},
     { name: 'SOULS & LEGACY', modules: [
       { id: 'soul_sync', label: 'SOUL SYNC', icon: Ghost, desc: 'Legacy operative sharding.', color: 'text-indigo-400' },

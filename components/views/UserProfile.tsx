@@ -1,14 +1,25 @@
-import React from 'react';
-import { User, Shield, Crown, Activity, LogOut } from 'lucide-react';
+import React, { useState } from 'react';
+import { User, Shield, Crown, Activity, LogOut, Key, CheckCircle2 } from 'lucide-react';
 import { UserState } from '../types';
 
 interface UserProfileProps {
   user: UserState;
   activePersona: any;
   onLogout: () => void;
+  onRedeem: (code: string) => boolean;
 }
 
-const UserProfile: React.FC<UserProfileProps> = ({ user, onLogout }) => {
+const UserProfile: React.FC<UserProfileProps> = ({ user, onLogout, onRedeem }) => {
+  const [code, setCode] = useState('');
+
+  const handleRedeem = () => {
+    if (onRedeem(code)) {
+        setCode('');
+    } else {
+        alert("INVALID ACCESS CODE");
+    }
+  };
+
   return (
     <div className="h-full w-full p-6 text-[var(--primary)] font-mono overflow-y-auto animate-in fade-in duration-500">
       <header className="mb-12 border-b border-[var(--primary)]/30 pb-6 flex justify-between items-end">
@@ -96,6 +107,23 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, onLogout }) => {
                         <div className="text-2xl font-bold text-emerald-500">VERIFIED</div>
                         <div className="text-[10px] opacity-50 uppercase">Biometrics</div>
                     </div>
+                </div>
+            </div>
+
+            {/* Code Redemption */}
+            <div className="bg-black/40 border border-white/10 p-6 rounded-2xl">
+                <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2"><Key /> Access Override</h3>
+                <div className="flex gap-4">
+                    <input 
+                        type="text" 
+                        value={code}
+                        onChange={(e) => setCode(e.target.value)}
+                        placeholder="ENTER_MASTER_KEY"
+                        className="flex-1 bg-black border border-white/20 rounded-xl px-4 py-2 text-white outline-none focus:border-[var(--primary)] transition-colors"
+                    />
+                    <button onClick={handleRedeem} className="bg-[var(--primary)] text-black px-6 py-2 rounded-xl font-bold hover:bg-white transition-colors">
+                        UNLOCK
+                    </button>
                 </div>
             </div>
         </div>

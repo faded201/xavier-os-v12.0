@@ -9,14 +9,28 @@ import ErrorBoundary from './ErrorBoundary';
 const App: React.FC = () => {
   const [user, setUser] = useState<UserState | null>(null);
   const [isBooting, setIsBooting] = useState(false);
-  const [unsettledBalance, setUnsettledBalance] = useState(0);
-  const [platformRevenue, setPlatformRevenue] = useState(0);
+  const [unsettledBalance, setUnsettledBalance] = useState(() => {
+    const saved = localStorage.getItem('xavier_balance');
+    return saved ? parseFloat(saved) : 0;
+  });
+  const [platformRevenue, setPlatformRevenue] = useState(() => {
+    const saved = localStorage.getItem('xavier_revenue');
+    return saved ? parseFloat(saved) : 0;
+  });
   const [userCurrency, setUserCurrency] = useState('AUD');
   const swarmInitiated = useRef(false);
   const [systemMood, setSystemMood] = useState<SystemMood>('stable');
   const [activePersona, setActivePersona] = useState<any>(null);
 
   // Effect to simulate linking to backend/AI data stream on load
+  useEffect(() => {
+    localStorage.setItem('xavier_balance', unsettledBalance.toString());
+  }, [unsettledBalance]);
+
+  useEffect(() => {
+    localStorage.setItem('xavier_revenue', platformRevenue.toString());
+  }, [platformRevenue]);
+
   useEffect(() => {
     const syncWithBackend = async () => {
       // Detect user currency based on browser locale
@@ -38,8 +52,7 @@ const App: React.FC = () => {
         setUnsettledBalance(data.balance);
       } catch (error) {
         console.warn("Backend offline, using cached/simulated data:", error);
-        // Backend offline: Initialize with zero for real-world accuracy
-        setUnsettledBalance(0);
+        // Backend offline: Using local storage persistence
       }
 
       // Swarm 255 Protocol: 255x Clones for 30 Automated Tasks
