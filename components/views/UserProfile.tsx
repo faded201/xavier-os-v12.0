@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { User, Shield, Crown, Activity, LogOut, Key } from 'lucide-react';
-import { UserState } from '../types';
+import { UserState, AppView } from '../types';
 
 interface UserProfileProps {
   user: UserState;
   activePersona: any;
   onLogout: () => void;
   onRedeem: (code: string) => boolean;
+  setView: (view: AppView) => void;
 }
 
-const UserProfile: React.FC<UserProfileProps> = ({ user, onLogout, onRedeem }) => {
+const UserProfile: React.FC<UserProfileProps> = ({ user, onLogout, onRedeem, setView }) => {
   const [code, setCode] = useState('');
 
   const handleRedeem = () => {
@@ -109,6 +110,20 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, onLogout, onRedeem }) =
                     </div>
                 </div>
             </div>
+
+            {/* Key Forge Access (Owner Only) */}
+            {user.isOwner && (
+                <div className="bg-black/40 border border-purple-500/30 p-6 rounded-2xl">
+                    <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2"><Key className="text-purple-500" /> Key Forge</h3>
+                    <p className="text-xs opacity-60 mb-4">Generate unlimited access codes for new operatives.</p>
+                    <button 
+                        onClick={() => setView('key_forge')}
+                        className="w-full py-3 bg-purple-600/20 border border-purple-500 text-purple-400 font-bold rounded-xl hover:bg-purple-500 hover:text-white transition-all uppercase tracking-widest"
+                    >
+                        Launch Generator
+                    </button>
+                </div>
+            )}
 
             {/* Code Redemption */}
             <div className="bg-black/40 border border-white/10 p-6 rounded-2xl">

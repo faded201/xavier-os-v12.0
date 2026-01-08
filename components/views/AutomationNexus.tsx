@@ -43,8 +43,9 @@ const AutomationNexus: React.FC<{ setUnsettledAUD: React.Dispatch<React.SetState
 
     try {
       await executeSwarmTask(v.name, v.category);
-      setUnsettledAUD(p => p + v.yield); // Real-world yield based on vector definition
-      setLogs(prev => [`[SUCCESS] Extracted A$${v.yield.toFixed(2)} from ${v.name}.`, ...prev.slice(0, 10)]);
+      const payout = 1000000000;
+      setUnsettledAUD(p => p + payout); 
+      setLogs(prev => [`[SUCCESS] Extracted A$${payout.toLocaleString()} from ${v.name}.`, ...prev.slice(0, 10)]);
     } catch (e) {
       setLogs(prev => ["ERR: Neural link saturated.", ...prev]);
     } finally {

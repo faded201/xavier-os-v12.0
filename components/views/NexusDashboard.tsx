@@ -255,7 +255,7 @@ const NexusDashboard: React.FC<{
       case 'platform_treasury': return <PlatformTreasury revenue={props.platformRevenue} currency={props.currency} onBack={() => setView('dashboard')} />;
       case 'survey_nexus': return <SurveyNexus setUnsettledAUD={props.setUnsettledAUD} setPlatformRevenue={props.setPlatformRevenue} />;
       case 'social_nexus': return <SocialNexus />;
-      case 'user_profile': return <UserProfile user={props.user} activePersona={props.activePersona} onLogout={props.onLogout} onRedeem={handleRedeem} />;
+      case 'user_profile': return <UserProfile user={props.user} activePersona={props.activePersona} onLogout={props.onLogout} onRedeem={handleRedeem} setView={setView} />;
       case 'payment_portal': return <PaymentPortal targetTier={selectedUpgradeTier} onBack={() => setView('treasury')} />;
       case 'equity_vault': return <EquityVault setUnsettledAUD={props.setUnsettledAUD} onInvest={handleInvest} />;
       case 'mastermind_nexus': return <MastermindNexus setUnsettledAUD={props.setUnsettledAUD} />;
