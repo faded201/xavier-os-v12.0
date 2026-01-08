@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Activity, Terminal, ShieldCheck, Wifi, Server, Database, Lock } from 'lucide-react';
+import { Activity, Terminal, Wifi } from 'lucide-react';
 import { MODULES } from '../data';
 
 interface UniversalModuleProps {
@@ -33,12 +33,14 @@ const UniversalModule: React.FC<UniversalModuleProps> = ({ moduleId }) => {
 
   if (!moduleData) return <div>Module Not Found</div>;
 
+  const Icon = moduleData.icon as React.ElementType;
+
   return (
     <div className="h-full w-full p-6 text-[var(--primary)] font-mono overflow-y-auto animate-in fade-in duration-500">
       <header className="mb-8 border-b border-[var(--primary)]/30 pb-6 flex justify-between items-end">
         <div>
             <h1 className="text-4xl font-black uppercase tracking-widest flex items-center gap-4 text-white">
-              <moduleData.icon size={40} className="text-[var(--primary)]" />
+              <Icon size={40} className="text-[var(--primary)]" />
               {moduleData.label}
             </h1>
             <p className="text-sm opacity-70 mt-2 tracking-[0.2em] uppercase">{moduleData.desc}</p>

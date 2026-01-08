@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Key, Copy, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { Key, Copy, ShieldCheck } from 'lucide-react';
 
 const ArchitectKeyGen: React.FC = () => {
   const [generatedKeys, setGeneratedKeys] = useState<{ code: string; created: string }[]>([]);

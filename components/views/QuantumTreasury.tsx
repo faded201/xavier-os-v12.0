@@ -10,7 +10,7 @@ interface Props {
   setView: (v: any) => void;
 }
 
-const QuantumTreasury: React.FC<Props> = ({ tier, isOwner }) => {
+const QuantumTreasury: React.FC<Props> = ({ tier, isOwner, startTrial }) => {
   const [billingCycle, setBillingCycle] = useState<'MONTHLY' | 'YEARLY'>('MONTHLY');
   const tiers = [
     { id: 'SOVEREIGN', name: 'Sovereign', icon: Globe },

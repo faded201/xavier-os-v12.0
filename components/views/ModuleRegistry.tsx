@@ -60,6 +60,7 @@ const ModuleRegistry: React.FC<ModuleRegistryProps> = ({ setView }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredModules.map(module => {
             const isOnline = IMPLEMENTED_MODULES.includes(module.id);
+            const Icon = module.icon as React.ElementType;
             return (
             <div 
                 key={module.id}
@@ -68,7 +69,7 @@ const ModuleRegistry: React.FC<ModuleRegistryProps> = ({ setView }) => {
             >
                 <div className="flex justify-between items-start mb-4">
                     <div className={`p-3 rounded-lg ${isOnline ? 'bg-[var(--primary)]/10 text-[var(--primary)]' : 'bg-red-900/10 text-red-500'}`}>
-                        <module.icon size={24} />
+                        <Icon size={24} />
                     </div>
                     <div className="flex flex-col items-end gap-1">
                         <div className={`text-[9px] font-bold px-2 py-0.5 rounded border ${isOnline ? 'text-emerald-500 border-emerald-500/30 bg-emerald-500/10' : 'text-red-500 border-red-500/30 bg-red-500/10'}`}>
